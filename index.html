@@ -2,425 +2,362 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Verbs Mastery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Verb Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Lucide icons via script -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Hide scrollbar for horizontal scrolling sections */
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Custom styles to mimic React component mounting animations and hide scrollbars */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Smooth animations */
         @keyframes slideUpFade {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-slide-up {
-            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
-
-        /* Prevent iOS zoom on input focus by ensuring text is at least 16px */
-        input[type="text"] { font-size: 16px; }
-        @media (min-width: 640px) { input[type="text"] { font-size: 1.5rem; } }
-
-        /* Ensure bottom spacing for mobile nav */
-        body { padding-bottom: 80px; }
-        @media (min-width: 768px) { body { padding-bottom: 24px; } }
+        
+        .animate-fade-in { animation: slideUpFade 0.5s ease-out forwards; }
+        .animate-zoom-in { animation: zoomIn 0.3s ease-out forwards; }
+        
+        /* 3D perspective for swipe cards */
+        .perspective-1000 { perspective: 1000px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen selection:bg-red-200 selection:text-red-900">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen selection:bg-red-200 selection:text-red-900 pb-24 md:pb-6">
 
-    <script>
-        const planData = {
-          Monday: [
-            { i: "Arise", p: "Arose", pp: "Arisen", s: "Surgir, Levantarse", t: "Irregular",
-              ex: { i: ["New problems arise every day.", "Nuevos problemas surgen cada día."], p: ["A complication arose during the surgery.", "Una complicación surgió durante la cirugía."], pp: ["Many difficulties have arisen.", "Muchas dificultades han surgido."] }
-            },
-            { i: "Awake", p: "Awoke", pp: "Awoken", s: "Despertarse", t: "Irregular",
-              ex: { i: ["I awake at 6 AM.", "Me despierto a las 6 AM."], p: ["She awoke to a loud noise.", "Ella se despertó por un ruido fuerte."], pp: ["I have awoken early today.", "Me he despertado temprano hoy."] }
-            },
-            { i: "Be", p: "Was/Were", pp: "Been", s: "Ser / Estar", t: "Irregular",
-              ex: { i: ["I am happy.", "Yo estoy feliz."], p: ["They were at home.", "Ellos estaban en casa."], pp: ["She has been sick.", "Ella ha estado enferma."] }
-            },
-            { i: "Bear", p: "Bore", pp: "Borne", s: "Soportar, dar a luz", t: "Irregular",
-              ex: { i: ["I can't bear the pain.", "No puedo soportar el dolor."], p: ["She bore the responsibility.", "Ella soportó la responsabilidad."], pp: ["He was born in Spain.", "Él nació en España."] }
-            },
-            { i: "Beat", p: "Beat", pp: "Beaten", s: "Golpear", t: "Irregular",
-              ex: { i: ["My heart beats fast.", "Mi corazón late rápido."], p: ["He beat the drum loudly.", "Él golpeó el tambor fuertemente."], pp: ["Our team was beaten.", "Nuestro equipo fue derrotado."] }
-            },
-            { i: "Become", p: "Became", pp: "Become", s: "Llegar a Ser", t: "Irregular",
-              ex: { i: ["Caterpillars become butterflies.", "Las orugas se convierten en mariposas."], p: ["He became a doctor in 2020.", "Él se convirtió en doctor en 2020."], pp: ["It has become very cold.", "Se ha vuelto muy frío."] }
-            },
-            { i: "Begin", p: "Began", pp: "Begun", s: "Empezar", t: "Irregular",
-              ex: { i: ["Classes begin at 8 AM.", "Las clases empiezan a las 8 AM."], p: ["It began to rain.", "Empezó a llover."], pp: ["The movie has already begun.", "La película ya ha empezado."] }
-            },
-            { i: "Bend", p: "Bent", pp: "Bent", s: "Doblar", t: "Irregular",
-              ex: { i: ["Can you bend this wire?", "¿Puedes doblar este alambre?"], p: ["He bent his knees.", "Él dobló sus rodillas."], pp: ["The spoon is bent.", "La cuchara está doblada."] }
-            },
-            { i: "Bet", p: "Bet", pp: "Bet", s: "Apostar", t: "Irregular",
-              ex: { i: ["I bet you can't do it.", "Apuesto a que no puedes hacerlo."], p: ["He bet all his money.", "Él apostó todo su dinero."], pp: ["They have bet on the winning horse.", "Ellos han apostado al caballo ganador."] }
-            },
-            { i: "Bind", p: "Bound", pp: "Bound", s: "Atar, encuadernar", t: "Irregular",
-              ex: { i: ["They bind the books by hand.", "Ellos encuadernan los libros a mano."], p: ["She bound his wounds.", "Ella vendó (ató) sus heridas."], pp: ["The hostages were bound.", "Los rehenes estaban atados."] }
-            },
-            { i: "Accept", p: "Accepted", pp: "Accepted", s: "Aceptar", t: "Regular",
-              ex: { i: ["I accept your offer.", "Acepto tu oferta."], p: ["She accepted the gift.", "Ella aceptó el regalo."], pp: ["They have accepted the terms.", "Ellos han aceptado los términos."] }
-            },
-            { i: "Answer", p: "Answered", pp: "Answered", s: "Responder", t: "Regular",
-              ex: { i: ["Please answer the phone.", "Por favor responde el teléfono."], p: ["He answered quickly.", "Él respondió rápidamente."], pp: ["The question was answered.", "La pregunta fue respondida."] }
-            },
-            { i: "Arrive", p: "Arrived", pp: "Arrived", s: "Llegar / Arribar", t: "Regular",
-              ex: { i: ["We arrive at noon.", "Llegamos al mediodía."], p: ["They arrived late.", "Ellos llegaron tarde."], pp: ["The train has arrived.", "El tren ha llegado."] }
-            },
-            { i: "Ask", p: "Asked", pp: "Asked", s: "Preguntar", t: "Regular",
-              ex: { i: ["I need to ask a question.", "Necesito hacer una pregunta."], p: ["She asked for help.", "Ella pidió ayuda."], pp: ["I have asked him twice.", "Le he preguntado dos veces."] }
-            },
-            { i: "Belong", p: "Belonged", pp: "Belonged", s: "Pertenecer", t: "Regular",
-              ex: { i: ["This book belongs to me.", "Este libro me pertenece."], p: ["The ring belonged to her grandmother.", "El anillo pertenecía a su abuela."], pp: ["It has always belonged here.", "Siempre ha pertenecido aquí."] }
-            }
-          ],
-          Tuesday: [
-            { i: "Bid", p: "Bid", pp: "Bid", s: "Pujar", t: "Irregular",
-              ex: { i: ["I bid fifty dollars.", "Pujo cincuenta dólares."], p: ["He bid the highest price.", "Él pujó el precio más alto."], pp: ["The house was bid for at auction.", "La casa fue pujada en subasta."] }
-            },
-            { i: "Bite", p: "Bit", pp: "Bitten", s: "Morder", t: "Irregular",
-              ex: { i: ["Does your dog bite?", "¿Tu perro muerde?"], p: ["The mosquito bit me.", "El mosquito me picó (mordió)."], pp: ["I was bitten by a snake.", "Fui mordido por una serpiente."] }
-            },
-            { i: "Bleed", p: "Bled", pp: "Bled", s: "Sangrar", t: "Irregular",
-              ex: { i: ["If you cut yourself, you bleed.", "Si te cortas, sangras."], p: ["His nose bled heavily.", "Su nariz sangró profusamente."], pp: ["The patient has bled too much.", "El paciente ha sangrado demasiado."] }
-            },
-            { i: "Blow", p: "Blew", pp: "Blown", s: "Soplar", t: "Irregular",
-              ex: { i: ["The wind blows hard here.", "El viento sopla fuerte aquí."], p: ["He blew out the candles.", "Él sopló las velas."], pp: ["The roof was blown off.", "El techo fue volado (por el viento)."] }
-            },
-            { i: "Break", p: "Broke", pp: "Broken", s: "Romper", t: "Irregular",
-              ex: { i: ["Don't break the glass.", "No rompas el vaso."], p: ["She broke her arm.", "Ella se rompió el brazo."], pp: ["My phone is broken.", "Mi teléfono está roto."] }
-            },
-            { i: "Breed", p: "Bred", pp: "Bred", s: "Criar", t: "Irregular",
-              ex: { i: ["They breed racehorses.", "Ellos crían caballos de carreras."], p: ["He bred dogs for years.", "Él crió perros por años."], pp: ["These dogs were bred for hunting.", "Estos perros fueron criados para cazar."] }
-            },
-            { i: "Bring", p: "Brought", pp: "Brought", s: "Traer Llevar", t: "Irregular",
-              ex: { i: ["Please bring me some water.", "Por favor tráeme algo de agua."], p: ["She brought a cake to the party.", "Ella trajo un pastel a la fiesta."], pp: ["I have brought my laptop.", "He traído mi laptop."] }
-            },
-            { i: "Broadcast", p: "Broadcast", pp: "Broadcast", s: "Radiar", t: "Irregular",
-              ex: { i: ["They broadcast the news live.", "Ellos transmiten las noticias en vivo."], p: ["The radio broadcast a warning.", "La radio transmitió una advertencia."], pp: ["The event was broadcast worldwide.", "El evento fue transmitido mundialmente."] }
-            },
-            { i: "Build", p: "Built", pp: "Built", s: "Edificar", t: "Irregular",
-              ex: { i: ["They plan to build a hospital.", "Planean construir un hospital."], p: ["Romans built these roads.", "Los romanos construyeron estos caminos."], pp: ["The house was built in 1990.", "La casa fue construida en 1990."] }
-            },
-            { i: "Burn", p: "Burnt", pp: "Burnt", s: "Quemar", t: "Irregular",
-              ex: { i: ["Fire can burn you.", "El fuego puede quemarte."], p: ["He burnt the dinner.", "Él quemó la cena."], pp: ["The house was burnt to the ground.", "La casa quedó reducida a cenizas (quemada)."] }
-            },
-            { i: "Change", p: "Changed", pp: "Changed", s: "Cambiar", t: "Regular",
-              ex: { i: ["I need to change my clothes.", "Necesito cambiarme de ropa."], p: ["The weather changed suddenly.", "El clima cambió de repente."], pp: ["Things have changed a lot.", "Las cosas han cambiado mucho."] }
-            },
-            { i: "Clean", p: "Cleaned", pp: "Cleaned", s: "Limpiar", t: "Regular",
-              ex: { i: ["I clean my room every Saturday.", "Limpio mi cuarto cada sábado."], p: ["She cleaned the windows yesterday.", "Ella limpió las ventanas ayer."], pp: ["The floor is freshly cleaned.", "El piso está recién limpiado."] }
-            },
-            { i: "Climb", p: "Climbed", pp: "Climbed", s: "Escalar", t: "Regular",
-              ex: { i: ["Monkeys climb trees.", "Los monos escalan árboles."], p: ["They climbed the mountain.", "Ellos escalaron la montaña."], pp: ["I have climbed that wall before.", "He escalado ese muro antes."] }
-            },
-            { i: "Close", p: "Closed", pp: "Closed", s: "Cerrar", t: "Regular",
-              ex: { i: ["Please close the door.", "Por favor cierra la puerta."], p: ["The shop closed at 9 PM.", "La tienda cerró a las 9 PM."], pp: ["The case is now closed.", "El caso está ahora cerrado."] }
-            },
-            { i: "Consider", p: "Considered", pp: "Considered", s: "Considerar", t: "Regular",
-              ex: { i: ["We consider him a good friend.", "Lo consideramos un buen amigo."], p: ["I considered buying a new car.", "Consideré comprar un auto nuevo."], pp: ["All options were considered.", "Todas las opciones fueron consideradas."] }
-            }
-          ],
-          Wednesday: [
-            { i: "Burst", p: "Burst", pp: "Burst", s: "Reventar", t: "Irregular",
-              ex: { i: ["Balloons burst if you overfill them.", "Los globos revientan si los llenas demasiado."], p: ["The pipe burst during winter.", "La tubería reventó durante el invierno."], pp: ["The dam has burst.", "La presa ha reventado."] }
-            },
-            { i: "Buy", p: "Bought", pp: "Bought", s: "Comprar", t: "Irregular",
-              ex: { i: ["I buy groceries on Fridays.", "Compro la despensa los viernes."], p: ["She bought a new dress.", "Ella compró un vestido nuevo."], pp: ["I have bought the tickets.", "He comprado los boletos."] }
-            },
-            { i: "Cast", p: "Cast", pp: "Cast", s: "Arrojar", t: "Irregular",
-              ex: { i: ["Witches cast spells.", "Las brujas arrojan (lanzan) hechizos."], p: ["He cast the fishing net into the sea.", "Él arrojó la red de pesca al mar."], pp: ["The shadow was cast by the tree.", "La sombra fue proyectada (arrojada) por el árbol."] }
-            },
-            { i: "Catch", p: "Caught", pp: "Caught", s: "Coger", t: "Irregular",
-              ex: { i: ["Try to catch the ball.", "Intenta coger (atrapar) la pelota."], p: ["The police caught the thief.", "La policía atrapó al ladrón."], pp: ["I have caught a cold.", "He cogido un resfriado."] }
-            },
-            { i: "Choose", p: "Chose", pp: "Chosen", s: "Elegir", t: "Irregular",
-              ex: { i: ["You can choose any color.", "Puedes elegir cualquier color."], p: ["She chose the red dress.", "Ella eligió el vestido rojo."], pp: ["He was chosen for the team.", "Él fue elegido para el equipo."] }
-            },
-            { i: "Cling", p: "Clung", pp: "Clung", s: "Agarrarse", t: "Irregular",
-              ex: { i: ["Monkeys cling to their mothers.", "Los monos se agarran a madres."], p: ["He clung to the rope.", "Él se aferró a la cuerda."], pp: ["The wet shirt has clung to my skin.", "La camisa mojada se ha pegado (agarrado) a mi piel."] }
-            },
-            { i: "Come", p: "Came", pp: "Come", s: "Venir", t: "Irregular",
-              ex: { i: ["Please come here.", "Por favor ven aquí."], p: ["He came home late.", "Él vino a casa tarde."], pp: ["Spring has finally come.", "La primavera finalmente ha llegado (venido)."] }
-            },
-            { i: "Cost", p: "Cost", pp: "Cost", s: "Costar", t: "Irregular",
-              ex: { i: ["How much does it cost?", "¿Cuánto cuesta?"], p: ["The repair cost 100 dollars.", "La reparación costó 100 dólares."], pp: ["It has cost me a lot of time.", "Me ha costado mucho tiempo."] }
-            },
-            { i: "Creep", p: "Crept", pp: "Crept", s: "Arrastrarse", t: "Irregular",
-              ex: { i: ["Spiders creep quietly.", "Las arañas se arrastran silenciosamente."], p: ["The cat crept towards the mouse.", "El gato se arrastró hacia el ratón."], pp: ["Doubt has crept into his mind.", "La duda se ha arrastrado (infiltrado) en su mente."] }
-            },
-            { i: "Cut", p: "Cut", pp: "Cut", s: "Cortar", t: "Irregular",
-              ex: { i: ["I use scissors to cut paper.", "Uso tijeras para cortar papel."], p: ["He cut his finger yesterday.", "Él se cortó el dedo ayer."], pp: ["My hair is cut short.", "Mi cabello está cortado corto."] }
-            },
-            { i: "Cook", p: "Cooked", pp: "Cooked", s: "Cocinar", t: "Regular",
-              ex: { i: ["I love to cook Italian food.", "Me encanta cocinar comida italiana."], p: ["He cooked dinner last night.", "Él cocinó la cena anoche."], pp: ["The chicken is perfectly cooked.", "El pollo está perfectamente cocinado."] }
-            },
-            { i: "Count", p: "Counted", pp: "Counted", s: "Contar", t: "Regular",
-              ex: { i: ["Can you count to ten?", "¿Puedes contar hasta diez?"], p: ["She counted the money.", "Ella contó el dinero."], pp: ["I have counted them twice.", "Los he contado dos veces."] }
-            },
-            { i: "Dance", p: "Danced", pp: "Danced", s: "Bailar", t: "Regular",
-              ex: { i: ["They like to dance salsa.", "A ellos les gusta bailar salsa."], p: ["We danced all night.", "Bailamos toda la noche."], pp: ["She has danced professionally.", "Ella ha bailado profesionalmente."] }
-            },
-            { i: "Dare", p: "Dared", pp: "Dared", s: "Retar", t: "Regular",
-              ex: { i: ["I dare you to jump.", "Te reto a saltar."], p: ["He dared to speak the truth.", "Él se atrevió (retó) a decir la verdad."], pp: ["She has never dared to do that.", "Ella nunca se ha atrevido a hacer eso."] }
-            },
-            { i: "Date", p: "Dated", pp: "Dated", s: "Citar", t: "Regular",
-              ex: { i: ["They want to date each other.", "Ellos quieren salir en cita."], p: ["We dated in high school.", "Salimos en citas en la secundaria."], pp: ["The letter is dated yesterday.", "La carta está fechada (citada) ayer."] }
-            }
-          ],
-          Thursday: [
-            { i: "Deal", p: "Dealt", pp: "Dealt", s: "Tratar", t: "Irregular",
-              ex: { i: ["I deal with customers daily.", "Yo trato con clientes diariamente."], p: ["He dealt the cards.", "Él repartió (trató) las cartas."], pp: ["The problem has been dealt with.", "El problema ha sido tratado."] }
-            },
-            { i: "Dig", p: "Dug", pp: "Dug", s: "Cavar", t: "Irregular",
-              ex: { i: ["Dogs love to dig holes.", "Los perros aman cavar hoyos."], p: ["They dug a deep well.", "Ellos cavaron un pozo profundo."], pp: ["The treasure was dug up.", "El tesoro fue desenterrado (cavado)."] }
-            },
-            { i: "Do", p: "Did", pp: "Done", s: "Hacer", t: "Irregular",
-              ex: { i: ["I do my homework every evening.", "Yo hago mi tarea cada tarde."], p: ["She did a great job.", "Ella hizo un gran trabajo."], pp: ["The work is done.", "El trabajo está hecho."] }
-            },
-            { i: "Draw", p: "Drew", pp: "Drawn", s: "Dibujar", t: "Irregular",
-              ex: { i: ["He likes to draw animals.", "A él le gusta dibujar animales."], p: ["She drew a beautiful portrait.", "Ella dibujó un hermoso retrato."], pp: ["A circle was drawn on the board.", "Un círculo fue dibujado en la pizarra."] }
-            },
-            { i: "Dream", p: "Dreamt", pp: "Dreamt", s: "Soñar", t: "Irregular",
-              ex: { i: ["I dream of traveling the world.", "Sueño con viajar por el mundo."], p: ["He dreamt about flying.", "Él soñó que volaba."], pp: ["I have often dreamt of this.", "A menudo he soñado con esto."] }
-            },
-            { i: "Drink", p: "Drank", pp: "Drunk", s: "Beber", t: "Irregular",
-              ex: { i: ["You should drink more water.", "Deberías beber más agua."], p: ["She drank a cup of coffee.", "Ella bebió una taza de café."], pp: ["He has drunk all the juice.", "Él se ha bebido todo el jugo."] }
-            },
-            { i: "Drive", p: "Drove", pp: "Driven", s: "Conducir", t: "Irregular",
-              ex: { i: ["I drive to work every day.", "Conduzco al trabajo cada día."], p: ["He drove very fast.", "Él condujo muy rápido."], pp: ["I have never driven a truck.", "Nunca he conducido un camión."] }
-            },
-            { i: "Eat", p: "Ate", pp: "Eaten", s: "Comer", t: "Irregular",
-              ex: { i: ["I eat an apple a day.", "Como una manzana al día."], p: ["We ate pizza last night.", "Comimos pizza anoche."], pp: ["Have you eaten lunch yet?", "¿Ya has comido el almuerzo?"] }
-            },
-            { i: "Fall", p: "Fell", pp: "Fallen", s: "Caer", t: "Irregular",
-              ex: { i: ["Leaves fall in autumn.", "Las hojas caen en otoño."], p: ["He fell off his bike.", "Él se cayó de su bicicleta."], pp: ["The temperature has fallen.", "La temperatura ha caído."] }
-            },
-            { i: "Feed", p: "Fed", pp: "Fed", s: "Alimentar", t: "Irregular",
-              ex: { i: ["Please feed the cat.", "Por favor alimenta al gato."], p: ["She fed the baby.", "Ella alimentó al bebé."], pp: ["The animals have been fed.", "Los animales han sido alimentados."] }
-            },
-            { i: "Deliver", p: "Delivered", pp: "Delivered", s: "Entregar", t: "Regular",
-              ex: { i: ["They deliver mail on weekdays.", "Ellos entregan correo entre semana."], p: ["The postman delivered a package.", "El cartero entregó un paquete."], pp: ["The pizza was delivered cold.", "La pizza fue entregada fría."] }
-            },
-            { i: "Dress", p: "Dressed", pp: "Dressed", s: "Vestir", t: "Regular",
-              ex: { i: ["It takes her long to dress.", "Le toma mucho tiempo vestirse."], p: ["He dressed formally for the event.", "Él se vistió formalmente para el evento."], pp: ["The kids are dressed for school.", "Los niños están vestidos para la escuela."] }
-            },
-            { i: "End", p: "Ended", pp: "Ended", s: "Terminar", t: "Regular",
-              ex: { i: ["The movie will end soon.", "La película terminará pronto."], p: ["The war ended in 1945.", "La guerra terminó en 1945."], pp: ["The relationship has ended.", "La relación ha terminado."] }
-            },
-            { i: "Enjoy", p: "Enjoyed", pp: "Enjoyed", s: "Disfrutar", t: "Regular",
-              ex: { i: ["I enjoy reading books.", "Disfruto leer libros."], p: ["We enjoyed the party very much.", "Disfrutamos mucho la fiesta."], pp: ["I have always enjoyed his music.", "Siempre he disfrutado su música."] }
-            },
-            { i: "Erase", p: "Erased", pp: "Erased", s: "Borrar", t: "Regular",
-              ex: { i: ["Use a rubber to erase mistakes.", "Usa una goma para borrar errores."], p: ["She erased the message.", "Ella borró el mensaje."], pp: ["All data has been erased.", "Todos los datos han sido borrados."] }
-            }
-          ],
-          Friday: [
-            { i: "Feel", p: "Felt", pp: "Felt", s: "Sentir", t: "Irregular",
-              ex: { i: ["I feel very happy today.", "Me siento muy feliz hoy."], p: ["He felt cold last night.", "Él sintió frío anoche."], pp: ["I have never felt better.", "Nunca me he sentido mejor."] }
-            },
-            { i: "Fight", p: "Fought", pp: "Fought", s: "Luchar", t: "Irregular",
-              ex: { i: ["Soldiers fight for their country.", "Los soldados luchan por su país."], p: ["They fought a tough battle.", "Ellos lucharon una dura batalla."], pp: ["The disease can be fought.", "La enfermedad puede ser combatida."] }
-            },
-            { i: "Find", p: "Found", pp: "Found", s: "Encontrar", t: "Irregular",
-              ex: { i: ["Can you find my keys?", "¿Puedes encontrar mis llaves?"], p: ["I found a dollar on the street.", "Encontré un dólar en la calle."], pp: ["The missing dog was found.", "El perro perdido fue encontrado."] }
-            },
-            { i: "Flee", p: "Fled", pp: "Fled", s: "Huir", t: "Irregular",
-              ex: { i: ["Civilians flee from war zones.", "Los civiles huyen de zonas de guerra."], p: ["The thief fled the scene.", "El ladrón huyó de la escena."], pp: ["They have fled the country.", "Ellos han huido del país."] }
-            },
-            { i: "Fly", p: "Flew", pp: "Flown", s: "Volar", t: "Irregular",
-              ex: { i: ["Birds fly south in winter.", "Los pájaros vuelan al sur en invierno."], p: ["We flew to Paris last summer.", "Volamos a París el verano pasado."], pp: ["I have flown in a helicopter.", "He volado en un helicóptero."] }
-            },
-            { i: "Forbid", p: "Forbade", pp: "Forbidden", s: "Prohibir", t: "Irregular",
-              ex: { i: ["I forbid you to go out tonight.", "Te prohíbo salir esta noche."], p: ["The king forbade the use of magic.", "El rey prohibió el uso de la magia."], pp: ["Smoking is forbidden here.", "Fumar está prohibido aquí."] }
-            },
-            { i: "Forget", p: "Forgot", pp: "Forgotten", s: "Olvidar", t: "Irregular",
-              ex: { i: ["Don't forget to call me.", "No olvides llamarme."], p: ["She forgot her umbrella.", "Ella olvidó su paraguas."], pp: ["I have forgotten his name.", "He olvidado su nombre."] }
-            },
-            { i: "Forgive", p: "Forgave", pp: "Forgiven", s: "Perdonar", t: "Irregular",
-              ex: { i: ["Please forgive my mistake.", "Por favor perdona mi error."], p: ["He forgave her completely.", "Él la perdonó completamente."], pp: ["Her sins were forgiven.", "Sus pecados fueron perdonados."] }
-            },
-            { i: "Freeze", p: "Froze", pp: "Frozen", s: "Helar", t: "Irregular",
-              ex: { i: ["Water will freeze at 0 degrees.", "El agua se helará a 0 grados."], p: ["The lake froze last night.", "El lago se heló anoche."], pp: ["My computer screen has frozen.", "La pantalla de mi computadora se ha congelado (helado)."] }
-            },
-            { i: "Get", p: "Got", pp: "Got", s: "Obtener", t: "Irregular",
-              ex: { i: ["Where did you get that shirt?", "¿De dónde obtuviste esa camisa?"], p: ["I got a good grade.", "Obtuve una buena calificación."], pp: ["I have got a new phone.", "He obtenido un teléfono nuevo."] }
-            },
-            { i: "Expect", p: "Expected", pp: "Expected", s: "Esperar", t: "Regular",
-              ex: { i: ["I expect a prompt reply.", "Espero una respuesta rápida."], p: ["She expected to win.", "Ella esperaba ganar."], pp: ["The results were expected.", "Los resultados eran esperados."] }
-            },
-            { i: "Fill", p: "Filled", pp: "Filled", s: "Llenar", t: "Regular",
-              ex: { i: ["Please fill the glass.", "Por favor llena el vaso."], p: ["He filled the tank with gas.", "Él llenó el tanque con gasolina."], pp: ["The room is filled with people.", "La habitación está llena de gente."] }
-            },
-            { i: "Finish", p: "Finished", pp: "Finished", s: "Terminar", t: "Regular",
-              ex: { i: ["I will finish the report today.", "Terminaré el reporte hoy."], p: ["She finished the race first.", "Ella terminó la carrera primero."], pp: ["The work is completely finished.", "El trabajo está completamente terminado."] }
-            },
-            { i: "Follow", p: "Followed", pp: "Followed", s: "Seguir", t: "Regular",
-              ex: { i: ["Follow me to the exit.", "Sígueme a la salida."], p: ["The dog followed the boy home.", "El perro siguió al niño a casa."], pp: ["The instructions were followed.", "Las instructions fueron seguidas."] }
-            },
-            { i: "Help", p: "Helped", pp: "Helped", s: "Ayudar", t: "Regular",
-              ex: { i: ["Can you help me with this?", "¿Puedes ayudarme con esto?"], p: ["He helped an old lady.", "Él ayudó a una anciana."], pp: ["They have helped us a lot.", "Ellos nos han ayudado mucho."] }
-            }
-          ],
-          Saturday: [
-            { i: "Give", p: "Gave", pp: "Given", s: "Dar", t: "Irregular",
-              ex: { i: ["Give me the book, please.", "Dame el libro, por favor."], p: ["He gave her a ring.", "Él le dio un anillo."], pp: ["I have given it some thought.", "Le he dado algo de pensamiento."] }
-            },
-            { i: "Go", p: "Went", pp: "Gone", s: "Ir", t: "Irregular",
-              ex: { i: ["I go to the gym on Mondays.", "Voy al gimnasio los lunes."], p: ["She went to the store.", "Ella fue a la tienda."], pp: ["They have already gone.", "Ellos ya se han ido."] }
-            },
-            { i: "Grow", p: "Grew", pp: "Grown", s: "Crecer", t: "Irregular",
-              ex: { i: ["Plants grow fast in spring.", "Las plantas crecen rápido en primavera."], p: ["He grew two inches this year.", "Él creció dos pulgadas este año."], pp: ["The city has grown rapidly.", "La ciudad ha crecido rápidamente."] }
-            },
-            { i: "Grind", p: "Ground", pp: "Ground", s: "Moler", t: "Irregular",
-              ex: { i: ["I grind my coffee beans fresh.", "Muelo mis granos de café frescos."], p: ["She ground the spices.", "Ella molió las especias."], pp: ["The wheat was ground into flour.", "El trigo fue molido en harina."] }
-            },
-            { i: "Hang", p: "Hung", pp: "Hung", s: "Colgar", t: "Irregular",
-              ex: { i: ["Where should I hang this painting?", "¿Dónde debería colgar esta pintura?"], p: ["He hung his coat by the door.", "Él colgó su abrigo junto a la puerta."], pp: ["The clothes are hung to dry.", "La ropa está colgada para secar."] }
-            },
-            { i: "Have", p: "Had", pp: "Had", s: "Haber o Tener", t: "Irregular",
-              ex: { i: ["I have two brothers.", "Tengo dos hermanos."], p: ["We had a great time.", "Tuvimos (pasamos) un gran momento."], pp: ["I have had this car for years.", "He tenido este auto por años."] }
-            },
-            { i: "Hear", p: "Heard", pp: "Heard", s: "Oir", t: "Irregular",
-              ex: { i: ["Can you hear that noise?", "¿Puedes oír ese ruido?"], p: ["I heard a rumor about you.", "Oí un rumor sobre ti."], pp: ["Have you heard the news?", "¿Has oído las noticias?"] }
-            },
-            { i: "Hide", p: "Hid", pp: "Hidden", s: "Ocultar", t: "Irregular",
-              ex: { i: ["Dogs often hide their bones.", "Los perros a menudo ocultan sus huesos."], p: ["She hid the present.", "Ella ocultó el regalo."], pp: ["The treasure is hidden.", "El tesoro está oculto."] }
-            },
-            { i: "Hit", p: "Hit", pp: "Hit", s: "Golpear", t: "Irregular",
-              ex: { i: ["He hit the ball hard.", "Él golpeó la pelota fuerte."], p: ["The car hit a tree.", "El auto golpeó un árbol."], pp: ["He was hit by a rock.", "Él fue golpeado por una roca."] }
-            },
-            { i: "Hold", p: "Held", pp: "Held", s: "Agarrar", t: "Irregular",
-              ex: { i: ["Hold my hand, please.", "Agarra (sostén) mi mano, por favor."], p: ["She held the baby gently.", "Ella sostuvo al bebé suavemente."], pp: ["The meeting was held yesterday.", "La reunión fue celebrada (sostenida) ayer."] }
-            },
-            { i: "Hurry", p: "Hurried", pp: "Hurried", s: "Apurar", t: "Regular",
-              ex: { i: ["We must hurry to catch the bus.", "Debemos apurarnos para alcanzar el bus."], p: ["She hurried to finish the test.", "Ella se apuró para terminar el examen."], pp: ["They have hurried all morning.", "Ellos se han apurado toda la mañana."] }
-            },
-            { i: "Intend", p: "Intended", pp: "Intended", s: "Intentar", t: "Regular",
-              ex: { i: ["I intend to study harder.", "Tengo la intención de estudiar más duro."], p: ["She intended to call you.", "Ella tenía la intención de llamarte."], pp: ["This rule was intended for safety.", "Esta regla estaba pensada (con intención) para seguridad."] }
-            },
-            { i: "Jump", p: "Jumped", pp: "Jumped", s: "Brincar / Saltar", t: "Regular",
-              ex: { i: ["Frogs jump high.", "Las ranas saltan alto."], p: ["He jumped over the fence.", "Él saltó sobre la valla."], pp: ["I have never jumped from a plane.", "Nunca he saltado de un avión."] }
-            },
-            { i: "Learn", p: "Learned", pp: "Learned", s: "Aprender", t: "Regular",
-              ex: { i: ["I want to learn French.", "Quiero aprender francés."], p: ["She learned to drive last year.", "Ella aprendió a conducir el año pasado."], pp: ["I have learned a lot today.", "He aprendido mucho hoy."] }
-            },
-            { i: "Like", p: "Liked", pp: "Liked", s: "Gustar", t: "Regular",
-              ex: { i: ["I like ice cream.", "Me gusta el helado."], p: ["They liked the movie.", "A ellos les gustó la película."], pp: ["She has always liked cats.", "A ella siempre le han gustado los gatos."] }
-            }
-          ],
-          Sunday: [
-            { i: "Hurt", p: "Hurt", pp: "Hurt", s: "Herir", t: "Irregular",
-              ex: { i: ["My leg hurts when I walk.", "Me duele (hiere) la pierna cuando camino."], p: ["He hurt his back lifting weights.", "Él se hirió la espalda levantando pesas."], pp: ["She was badly hurt in the accident.", "Ella fue gravemente herida en el accidente."] }
-            },
-            { i: "Keep", p: "Kept", pp: "Kept", s: "Conservar", t: "Irregular",
-              ex: { i: ["I keep my keys in this pocket.", "Conservo (guardo) mis llaves en este bolsillo."], p: ["She kept the secret.", "Ella guardó (conservó) el secreto."], pp: ["The meat must be kept cold.", "La carne debe ser conservada fría."] }
-            },
-            { i: "Know", p: "Knew", pp: "Known", s: "Saber Conocer", t: "Irregular",
-              ex: { i: ["I know the answer.", "Sé la respuesta."], p: ["I knew him from school.", "Lo conocía de la escuela."], pp: ["He is known worldwide.", "Él es conocido mundialmente."] }
-            },
-            { i: "Kneel", p: "Knelt", pp: "Knelt", s: "Arrodillarse", t: "Irregular",
-              ex: { i: ["They kneel to pray.", "Ellos se arrodillan para rezar."], p: ["He knelt before the king.", "Él se arrodilló ante el rey."], pp: ["She has knelt there for hours.", "Ella se ha arrodillado ahí por horas."] }
-            },
-            { i: "Knit", p: "Knit", pp: "Knit", s: "Hacer punto", t: "Irregular",
-              ex: { i: ["My grandmother likes to knit.", "A mi abuela le gusta hacer punto."], p: ["She knit a sweater for me.", "Ella tejió (hizo punto) un suéter para mí."], pp: ["This scarf is hand-knit.", "Esta bufanda está hecha a punto a mano."] }
-            },
-            { i: "Lay", p: "Laid", pp: "Laid", s: "Poner", t: "Irregular",
-              ex: { i: ["Birds lay eggs.", "Los pájaros ponen huevos."], p: ["He laid the book on the table.", "Él puso el libro sobre la mesa."], pp: ["The foundation was laid firmly.", "Los cimientos fueron puestos firmemente."] }
-            },
-            { i: "Lead", p: "Led", pp: "Led", s: "Conducir", t: "Irregular",
-              ex: { i: ["The guide will lead the tour.", "El guía conducirá el tour."], p: ["She led the team to victory.", "Ella condujo al equipo a la victoria."], pp: ["The discussion has led to nowhere.", "La discusión no ha llevado (conducido) a nada."] }
-            },
-            { i: "Lean", p: "Leant", pp: "Leant", s: "Apoyarse", t: "Irregular",
-              ex: { i: ["Don't lean against the glass.", "No te apoyes contra el cristal."], p: ["He leant on the wall.", "Él se apoyó en la pared."], pp: ["The ladder is leant against the tree.", "La escalera está apoyada contra el árbol."] }
-            },
-            { i: "Leap", p: "Leapt", pp: "Leapt", s: "Brincar", t: "Irregular",
-              ex: { i: ["Look before you leap.", "Mira antes de brincar."], p: ["The frog leapt into the pond.", "La rana brincó al estanque."], pp: ["He has leapt over higher hurdles.", "Él ha brincado sobre vallas más altas."] }
-            },
-            { i: "Leave", p: "Left", pp: "Left", s: "Dejar", t: "Irregular",
-              ex: { i: ["I usually leave work at 5 PM.", "Usualmente dejo el trabajo a las 5 PM."], p: ["He left his umbrella on the bus.", "Él dejó su paraguas en el autobús."], pp: ["The train has already left.", "El tren ya se ha ido (ha dejado la estación)."] }
-            },
-            { i: "Listen", p: "Listened", pp: "Listened", s: "Escuchar", t: "Regular",
-              ex: { i: ["I like to listen to music.", "Me gusta escuchar música."], p: ["She listened carefully.", "Ella escuchó cuidadosamente."], pp: ["We have listened to your advice.", "Hemos escuchado tu consejo."] }
-            },
-            { i: "Live", p: "Lived", pp: "Lived", s: "Vivir", t: "Regular",
-              ex: { i: ["I live in a small apartment.", "Vivo en un departamento pequeño."], p: ["He lived in Spain for two years.", "Él vivió en España por dos años."], pp: ["They have lived here since 2010.", "Ellos han vivido aquí desde 2010."] }
-            },
-            { i: "Look", p: "Looked", pp: "Looked", s: "Mirar", t: "Regular",
-              ex: { i: ["Look at this picture.", "Mira esta foto."], p: ["She looked at me.", "Ella me miró."], pp: ["I have looked everywhere for my keys.", "He mirado en todas partes buscando mis llaves."] }
-            },
-            { i: "Love", p: "Loved", pp: "Loved", s: "Amar", t: "Regular",
-              ex: { i: ["I love chocolate.", "Amo el chocolate."], p: ["They loved the surprise.", "A ellos les encantó (amaron) la sorpresa."], pp: ["She is loved by everyone.", "Ella es amada por todos."] }
-            },
-            { i: "Miss", p: "Missed", pp: "Missed", s: "Extrañar", t: "Regular",
-              ex: { i: ["I miss my family.", "Extraño a mi familia."], p: ["He missed the train.", "Él perdió (extrañó) el tren."], pp: ["I have really missed you.", "Realmente te he extrañado."] }
-            },
-            { i: "Need", p: "Needed", pp: "Needed", s: "Necesitar", t: "Regular",
-              ex: { i: ["I need a vacation.", "Necesito unas vacaciones."], p: ["She needed help with her homework.", "Ella necesitaba ayuda con su tarea."], pp: ["Repairs are badly needed.", "Las reparaciones son muy necesitadas."] }
-            }
-          ]
-        };
-
-        const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        let currentDay = 'Monday';
-        let activeTab = 'study';
-        let masteryData = JSON.parse(localStorage.getItem('verbMastery') || '{}');
-        
-        let writeState = { currentVerb: null, status: 'playing' };
-        let spellState = { currentVerb: null, status: 'playing' };
-        let listenState = { currentVerb: null, status: 'playing' };
-        let examState = { started: false, currentIndex: 0, answers: [], shuffledVerbs: [] };
-    </script>
-
-    <header class="bg-gradient-to-r from-red-700 to-orange-600 text-white p-4 sm:p-6 shadow-md sticky top-0 z-40">
+    <!-- Header Section -->
+    <header id="main-header" class="bg-gradient-to-r text-white p-4 sm:p-6 shadow-md sticky top-0 z-40 transition-colors duration-500 from-red-700 to-orange-600">
         <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3 text-center md:text-left">
-            <div>
-                <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold flex items-center justify-center md:justify-start gap-2">
-                    <i data-lucide="target" class="text-yellow-400 w-6 h-6 md:w-8 md:h-8"></i>
-                    Participle Challenge
-                </h1>
-                <p class="mt-1 text-red-100 opacity-90 text-xs sm:text-sm md:text-base">Intensive Training: Past Participle Only</p>
+            <div class="flex items-center gap-4">
+                <div>
+                    <h1 id="app-title" class="text-xl sm:text-2xl md:text-3xl font-extrabold flex items-center justify-center md:justify-start gap-2">
+                        <i data-lucide="target" class="text-yellow-400 w-6 h-6 md:w-8 md:h-8" id="app-icon"></i>
+                        <span id="app-title-text">Participle Challenge</span>
+                    </h1>
+                    <p id="app-subtitle" class="mt-1 text-white/80 text-xs sm:text-sm md:text-base">
+                        Intensive Training: Past Participle Only
+                    </p>
+                </div>
+                
+                <!-- Desktop Mode Switcher -->
+                <div class="hidden md:flex bg-white/20 p-1 rounded-xl backdrop-blur-sm">
+                    <button onclick="switchMode('participles')" id="btn-mode-part-desk" class="px-4 py-2 rounded-lg text-sm font-bold transition-all bg-white text-red-700 shadow-sm">Participles</button>
+                    <button onclick="switchMode('phrasals')" id="btn-mode-phra-desk" class="px-4 py-2 rounded-lg text-sm font-bold transition-all text-white hover:bg-white/10">Phrasals</button>
+                </div>
             </div>
+            
             <div class="bg-white/10 px-4 py-1.5 md:py-2 rounded-xl backdrop-blur-sm border border-white/20 text-center w-full md:w-auto flex items-center md:block justify-center gap-3">
-                <span class="block text-[10px] md:text-xs uppercase tracking-wider text-red-200 md:mb-1">Current Day</span>
+                <span class="block text-[10px] md:text-xs uppercase tracking-wider text-white/70 md:mb-1">Current Day</span>
                 <span id="current-day-display" class="text-lg md:text-2xl font-bold text-yellow-400">Monday</span>
             </div>
         </div>
+
+        <!-- Mobile Mode Switcher -->
+        <div class="md:hidden mt-3 flex bg-white/20 p-1 rounded-xl backdrop-blur-sm mx-auto max-w-xs">
+            <button onclick="switchMode('participles')" id="btn-mode-part-mob" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-red-700 shadow-sm">Participles</button>
+            <button onclick="switchMode('phrasals')" id="btn-mode-phra-mob" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-white hover:bg-white/10">Phrasal Verbs</button>
+        </div>
         
-        <!-- Day Selector (Horizontal Scroll) -->
-        <div class="max-w-5xl mx-auto mt-4">
-            <div id="day-selector" class="flex overflow-x-auto gap-2 pb-2 scrollbar-hide snap-x px-1">
-                <!-- Days injected here via JS -->
+        <!-- Day Selector -->
+        <div class="max-w-5xl mx-auto mt-4 overflow-hidden">
+            <div id="day-selector-container" class="flex overflow-x-auto gap-2 pb-2 snap-x px-1 no-scrollbar">
+                <!-- Days will be injected here -->
             </div>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto mt-4 px-4 pb-20 md:pb-6" id="main-content">
-        <!-- Main Application Content Injected Here -->
+    <!-- Main Content Area -->
+    <main class="max-w-5xl mx-auto mt-4 px-4" id="main-content">
+        <!-- Dynamic content injected here -->
     </main>
 
-    <!-- Mobile Bottom Navigation (Visible mainly on small screens, adjusts on md) -->
+    <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 z-50 md:sticky md:bottom-auto md:w-auto md:bg-transparent md:border-none md:mt-6 md:max-w-5xl md:mx-auto md:px-4">
-        <div class="flex justify-around items-center p-2 md:bg-white md:rounded-2xl md:shadow-sm md:border md:border-slate-200 md:gap-2 md:overflow-x-auto md:snap-x md:scrollbar-hide" id="mode-tabs">
-            <!-- Tabs injected here via JS -->
+        <div id="bottom-nav-container" class="flex justify-around items-center p-2 md:bg-white md:rounded-2xl md:shadow-sm md:border md:border-slate-200 md:gap-2 md:overflow-x-auto md:snap-x no-scrollbar">
+            <!-- Tabs will be injected here -->
         </div>
     </nav>
 
     <script>
-        function updateMastery(verbInfinitive, isCorrect) {
-            const currentScore = masteryData[verbInfinitive] || 0;
-            const newScore = isCorrect ? Math.min(currentScore + 1, 3) : Math.max(currentScore - 1, -2);
-            masteryData[verbInfinitive] = newScore;
-            localStorage.setItem('verbMastery', JSON.stringify(masteryData));
-        }
+        // --- DATA ---
+        const planData = {
+          Monday: [
+            { i: "Arise", p: "Arose", pp: "Arisen", s: "Surgir, Levantarse", t: "Irregular", ex: { i: ["New problems arise every day.", "Nuevos problemas surgen cada día."], p: ["A complication arose during the surgery.", "Una complicación surgió durante la cirugía."], pp: ["Many difficulties have arisen.", "Muchas dificultades han surgido."] } },
+            { i: "Awake", p: "Awoke", pp: "Awoken", s: "Despertarse", t: "Irregular", ex: { i: ["I awake at 6 AM.", "Me despierto a las 6 AM."], p: ["She awoke to a loud noise.", "Ella se despertó por un ruido fuerte."], pp: ["I have awoken early today.", "Me he despertado temprano hoy."] } },
+            { i: "Be", p: "Was/Were", pp: "Been", s: "Ser / Estar", t: "Irregular", ex: { i: ["I am happy.", "Yo estoy feliz."], p: ["They were at home.", "Ellos estaban en casa."], pp: ["She has been sick.", "Ella ha estado enferma."] } },
+            { i: "Bear", p: "Bore", pp: "Borne", s: "Soportar, dar a luz", t: "Irregular", ex: { i: ["I can't bear the pain.", "No puedo soportar el dolor."], p: ["She bore the responsibility.", "Ella soportó la responsabilidad."], pp: ["He was born in Spain.", "Él nació en España."] } },
+            { i: "Beat", p: "Beat", pp: "Beaten", s: "Golpear", t: "Irregular", ex: { i: ["My heart beats fast.", "Mi corazón late rápido."], p: ["He beat the drum loudly.", "Él golpeó el tambor fuertemente."], pp: ["Our team was beaten.", "Nuestro equipo fue derrotado."] } },
+            { i: "Become", p: "Became", pp: "Become", s: "Llegar a Ser", t: "Irregular", ex: { i: ["Caterpillars become butterflies.", "Las orugas se convierten en mariposas."], p: ["He became a doctor in 2020.", "Él se convirtió en doctor en 2020."], pp: ["It has become very cold.", "Se ha vuelto muy frío."] } },
+            { i: "Begin", p: "Began", pp: "Begun", s: "Empezar", t: "Irregular", ex: { i: ["Classes begin at 8 AM.", "Las clases empiezan a las 8 AM."], p: ["It began to rain.", "Empezó a llover."], pp: ["The movie has already begun.", "La película ya ha empezado."] } },
+            { i: "Bend", p: "Bent", pp: "Bent", s: "Doblar", t: "Irregular", ex: { i: ["Can you bend this wire?", "¿Puedes doblar este alambre?"], p: ["He bent his knees.", "Él dobló sus rodillas."], pp: ["The spoon is bent.", "La cuchara está doblada."] } },
+            { i: "Bet", p: "Bet", pp: "Bet", s: "Apostar", t: "Irregular", ex: { i: ["I bet you can't do it.", "Apuesto a que no puedes hacerlo."], p: ["He bet all his money.", "Él apostó todo su dinero."], pp: ["They have bet on the winning horse.", "Ellos han apostado al caballo ganador."] } },
+            { i: "Bind", p: "Bound", pp: "Bound", s: "Atar, encuadernar", t: "Irregular", ex: { i: ["They bind the books by hand.", "Ellos encuadernan los libros a mano."], p: ["She bound his wounds.", "Ella vendó (ató) sus heridas."], pp: ["The hostages were bound.", "Los rehenes estaban atados."] } },
+            { i: "Accept", p: "Accepted", pp: "Accepted", s: "Aceptar", t: "Regular", ex: { i: ["I accept your offer.", "Acepto tu oferta."], p: ["She accepted the gift.", "Ella aceptó el regalo."], pp: ["They have accepted the terms.", "Ellos han aceptado los términos."] } },
+            { i: "Answer", p: "Answered", pp: "Answered", s: "Responder", t: "Regular", ex: { i: ["Please answer the phone.", "Por favor responde el teléfono."], p: ["He answered quickly.", "Él respondió rápidamente."], pp: ["The question was answered.", "La pregunta fue respondida."] } },
+            { i: "Arrive", p: "Arrived", pp: "Arrived", s: "Llegar / Arribar", t: "Regular", ex: { i: ["We arrive at noon.", "Llegamos al mediodía."], p: ["They arrived late.", "Ellos llegaron tarde."], pp: ["The train has arrived.", "El tren ha llegado."] } },
+            { i: "Ask", p: "Asked", pp: "Asked", s: "Preguntar", t: "Regular", ex: { i: ["I need to ask a question.", "Necesito hacer una pregunta."], p: ["She asked for help.", "Ella pidió ayuda."], pp: ["I have asked him twice.", "Le he preguntado dos veces."] } },
+            { i: "Belong", p: "Belonged", pp: "Belonged", s: "Pertenecer", t: "Regular", ex: { i: ["This book belongs to me.", "Este libro me pertenece."], p: ["The ring belonged to her grandmother.", "El anillo pertenecía a su abuela."], pp: ["It has always belonged here.", "Siempre ha pertenecido aquí."] } }
+          ],
+          Tuesday: [
+            { i: "Bid", p: "Bid", pp: "Bid", s: "Pujar", t: "Irregular", ex: { i: ["I bid fifty dollars.", "Pujo cincuenta dólares."], p: ["He bid the highest price.", "Él pujó el precio más alto."], pp: ["The house was bid for at auction.", "La casa fue pujada en subasta."] } },
+            { i: "Bite", p: "Bit", pp: "Bitten", s: "Morder", t: "Irregular", ex: { i: ["Does your dog bite?", "¿Tu perro muerde?"], p: ["The mosquito bit me.", "El mosquito me picó (mordió)."], pp: ["I was bitten by a snake.", "Fui mordido por una serpiente."] } },
+            { i: "Bleed", p: "Bled", pp: "Bled", s: "Sangrar", t: "Irregular", ex: { i: ["If you cut yourself, you bleed.", "Si te cortas, sangras."], p: ["His nose bled heavily.", "Su nariz sangró profusamente."], pp: ["The patient has bled too much.", "El paciente ha sangrado demasiado."] } },
+            { i: "Blow", p: "Blew", pp: "Blown", s: "Soplar", t: "Irregular", ex: { i: ["The wind blows hard here.", "El viento sopla fuerte aquí."], p: ["He blew out the candles.", "Él sopló las velas."], pp: ["The roof was blown off.", "El techo fue volado (por el viento)."] } },
+            { i: "Break", p: "Broke", pp: "Broken", s: "Romper", t: "Irregular", ex: { i: ["Don't break the glass.", "No rompas el vaso."], p: ["She broke her arm.", "Ella se rompió el brazo."], pp: ["My phone is broken.", "Mi teléfono está roto."] } },
+            { i: "Breed", p: "Bred", pp: "Bred", s: "Criar", t: "Irregular", ex: { i: ["They breed racehorses.", "Ellos crían caballos de carreras."], p: ["He bred dogs for years.", "Él crió perros por años."], pp: ["These dogs were bred for hunting.", "Estos perros fueron criados para cazar."] } },
+            { i: "Bring", p: "Brought", pp: "Brought", s: "Traer Llevar", t: "Irregular", ex: { i: ["Please bring me some water.", "Por favor tráeme algo de agua."], p: ["She brought a cake to the party.", "Ella trajo un pastel a la fiesta."], pp: ["I have brought my laptop.", "He traído mi laptop."] } },
+            { i: "Broadcast", p: "Broadcast", pp: "Broadcast", s: "Radiar", t: "Irregular", ex: { i: ["They broadcast the news live.", "Ellos transmiten las noticias en vivo."], p: ["The radio broadcast a warning.", "La radio transmitió una advertencia."], pp: ["The event was broadcast worldwide.", "El evento fue transmitido mundialmente."] } },
+            { i: "Build", p: "Built", pp: "Built", s: "Edificar", t: "Irregular", ex: { i: ["They plan to build a hospital.", "Planean construir un hospital."], p: ["Romans built these roads.", "Los romanos construyeron estos caminos."], pp: ["The house was built in 1990.", "La casa fue construida en 1990."] } },
+            { i: "Burn", p: "Burnt / Burned", pp: "Burnt / Burned", s: "Quemar", t: "Irregular", ex: { i: ["Fire can burn you.", "El fuego puede quemarte."], p: ["He burnt the dinner.", "Él quemó la cena."], pp: ["The house was burnt to the ground.", "La casa quedó reducida a cenizas."] } },
+            { i: "Change", p: "Changed", pp: "Changed", s: "Cambiar", t: "Regular", ex: { i: ["I need to change my clothes.", "Necesito cambiarme de ropa."], p: ["The weather changed suddenly.", "El clima cambió de repente."], pp: ["Things have changed a lot.", "Las cosas han cambiado mucho."] } },
+            { i: "Clean", p: "Cleaned", pp: "Cleaned", s: "Limpiar", t: "Regular", ex: { i: ["I clean my room every Saturday.", "Limpio mi cuarto cada sábado."], p: ["She cleaned the windows yesterday.", "Ella limpió las ventanas ayer."], pp: ["The floor is freshly cleaned.", "El piso está recién limpiado."] } },
+            { i: "Climb", p: "Climbed", pp: "Climbed", s: "Escalar", t: "Regular", ex: { i: ["Monkeys climb trees.", "Los monos escalan árboles."], p: ["They climbed the mountain.", "Ellos escalaron la montaña."], pp: ["I have climbed that wall before.", "He escalado ese muro antes."] } },
+            { i: "Close", p: "Closed", pp: "Closed", s: "Cerrar", t: "Regular", ex: { i: ["Please close the door.", "Por favor cierra la puerta."], p: ["The shop closed at 9 PM.", "La tienda cerró a las 9 PM."], pp: ["The case is now closed.", "El caso está ahora cerrado."] } },
+            { i: "Consider", p: "Considered", pp: "Considered", s: "Considerar", t: "Regular", ex: { i: ["We consider him a good friend.", "Lo consideramos un buen amigo."], p: ["I considered buying a new car.", "Consideré comprar un auto nuevo."], pp: ["All options were considered.", "Todas las opciones fueron consideradas."] } }
+          ],
+          Wednesday: [
+            { i: "Burst", p: "Burst", pp: "Burst", s: "Reventar", t: "Irregular", ex: { i: ["Balloons burst if you overfill them.", "Los globos revientan si los llenas demasiado."], p: ["The pipe burst during winter.", "La tubería reventó durante el invierno."], pp: ["The dam has burst.", "La presa ha reventado."] } },
+            { i: "Buy", p: "Bought", pp: "Bought", s: "Comprar", t: "Irregular", ex: { i: ["I buy groceries on Fridays.", "Compro la despensa los viernes."], p: ["She bought a new dress.", "Ella compró un vestido nuevo."], pp: ["I have bought the tickets.", "He comprado los boletos."] } },
+            { i: "Cast", p: "Cast", pp: "Cast", s: "Arrojar", t: "Irregular", ex: { i: ["Witches cast spells.", "Las brujas arrojan (lanzan) hechizos."], p: ["He cast the fishing net into the sea.", "Él arrojó la red de pesca al mar."], pp: ["The shadow was cast by the tree.", "La sombra fue proyectada (arrojada) por el árbol."] } },
+            { i: "Catch", p: "Caught", pp: "Caught", s: "Coger", t: "Irregular", ex: { i: ["Try to catch the ball.", "Intenta coger (atrapar) la pelota."], p: ["The police caught the thief.", "La policía atrapó al ladrón."], pp: ["I have caught a cold.", "He cogido un resfriado."] } },
+            { i: "Choose", p: "Chose", pp: "Chosen", s: "Elegir", t: "Irregular", ex: { i: ["You can choose any color.", "Puedes elegir cualquier color."], p: ["She chose the red dress.", "Ella eligió el vestido rojo."], pp: ["He was chosen for the team.", "Él fue elegido para el equipo."] } },
+            { i: "Cling", p: "Clung", pp: "Clung", s: "Agarrarse", t: "Irregular", ex: { i: ["Monkeys cling to their mothers.", "Los monos se agarran a madres."], p: ["He clung to the rope.", "Él se aferró a la cuerda."], pp: ["The wet shirt has clung to my skin.", "La camisa mojada se ha pegado (agarrado) a mi piel."] } },
+            { i: "Come", p: "Came", pp: "Come", s: "Venir", t: "Irregular", ex: { i: ["Please come here.", "Por favor ven aquí."], p: ["He came home late.", "Él vino a casa tarde."], pp: ["Spring has finally come.", "La primavera finalmente ha llegado (venido)."] } },
+            { i: "Cost", p: "Cost", pp: "Cost", s: "Costar", t: "Irregular", ex: { i: ["How much does it cost?", "¿Cuánto cuesta?"], p: ["The repair cost 100 dollars.", "La reparación costó 100 dólares."], pp: ["It has cost me a lot of time.", "Me ha costado mucho tiempo."] } },
+            { i: "Creep", p: "Crept", pp: "Crept", s: "Arrastrarse", t: "Irregular", ex: { i: ["Spiders creep quietly.", "Las arañas se arrastran silenciosamente."], p: ["The cat crept towards the mouse.", "El gato se arrastró hacia el ratón."], pp: ["Doubt has crept into his mind.", "La duda se ha arrastrado en su mente."] } },
+            { i: "Cut", p: "Cut", pp: "Cut", s: "Cortar", t: "Irregular", ex: { i: ["I use scissors to cut paper.", "Uso tijeras para cortar papel."], p: ["He cut his finger yesterday.", "Él se cortó el dedo ayer."], pp: ["My hair is cut short.", "Mi cabello está cortado corto."] } },
+            { i: "Cook", p: "Cooked", pp: "Cooked", s: "Cocinar", t: "Regular", ex: { i: ["I love to cook Italian food.", "Me encanta cocinar comida italiana."], p: ["He cooked dinner last night.", "Él cocinó la cena anoche."], pp: ["The chicken is perfectly cooked.", "El pollo está perfectamente cocinado."] } },
+            { i: "Count", p: "Counted", pp: "Counted", s: "Contar", t: "Regular", ex: { i: ["Can you count to ten?", "¿Puedes contar hasta diez?"], p: ["She counted the money.", "Ella contó el dinero."], pp: ["I have counted them twice.", "Los he contado dos veces."] } },
+            { i: "Dance", p: "Danced", pp: "Danced", s: "Bailar", t: "Regular", ex: { i: ["They like to dance salsa.", "A ellos les gusta bailar salsa."], p: ["We danced all night.", "Bailamos toda la noche."], pp: ["She has danced professionally.", "Ella ha bailado profesionalmente."] } },
+            { i: "Dare", p: "Dared", pp: "Dared", s: "Retar", t: "Regular", ex: { i: ["I dare you to jump.", "Te reto a saltar."], p: ["He dared to speak the truth.", "Él se atrevió (retó) a decir la verdad."], pp: ["She has never dared to do that.", "Ella nunca se ha atrevido a hacer eso."] } },
+            { i: "Date", p: "Dated", pp: "Dated", s: "Citar", t: "Regular", ex: { i: ["They want to date each other.", "Ellos quieren salir en cita."], p: ["We dated in high school.", "Salimos en citas en la secundaria."], pp: ["The letter is dated yesterday.", "La carta está fechada (citada) ayer."] } }
+          ],
+          Thursday: [
+            { i: "Deal", p: "Dealt", pp: "Dealt", s: "Tratar", t: "Irregular", ex: { i: ["I deal with customers daily.", "Yo trato con clientes diariamente."], p: ["He dealt the cards.", "Él repartió (trató) las cartas."], pp: ["The problem has been dealt with.", "El problema ha sido tratado."] } },
+            { i: "Dig", p: "Dug", pp: "Dug", s: "Cavar", t: "Irregular", ex: { i: ["Dogs love to dig holes.", "Los perros aman cavar hoyos."], p: ["They dug a deep well.", "Ellos cavaron un pozo profundo."], pp: ["The treasure was dug up.", "El tesoro fue desenterrado (cavado)."] } },
+            { i: "Do", p: "Did", pp: "Done", s: "Hacer", t: "Irregular", ex: { i: ["I do my homework every evening.", "Yo hago mi tarea cada tarde."], p: ["She did a great job.", "Ella hizo un gran trabajo."], pp: ["The work is done.", "El trabajo está hecho."] } },
+            { i: "Draw", p: "Drew", pp: "Drawn", s: "Dibujar", t: "Irregular", ex: { i: ["He likes to draw animals.", "A él le gusta dibujar animales."], p: ["She drew a beautiful portrait.", "Ella dibujó un hermoso retrato."], pp: ["A circle was drawn on the board.", "Un círculo fue dibujado en la pizarra."] } },
+            { i: "Dream", p: "Dreamt / Dreamed", pp: "Dreamt / Dreamed", s: "Soñar", t: "Irregular", ex: { i: ["I dream of traveling the world.", "Sueño con viajar por el mundo."], p: ["He dreamt about flying.", "Él soñó que volaba."], pp: ["I have often dreamt of this.", "A menudo he soñado con esto."] } },
+            { i: "Drink", p: "Drank", pp: "Drunk", s: "Beber", t: "Irregular", ex: { i: ["You should drink more water.", "Deberías beber más agua."], p: ["She drank a cup of coffee.", "Ella bebió una taza de café."], pp: ["He has drunk all the juice.", "Él se ha bebido todo el jugo."] } },
+            { i: "Drive", p: "Drove", pp: "Driven", s: "Conducir", t: "Irregular", ex: { i: ["I drive to work every day.", "Conduzco al trabajo cada día."], p: ["He drove very fast.", "Él condujo muy rápido."], pp: ["I have never driven a truck.", "Nunca he conducido un camión."] } },
+            { i: "Eat", p: "Ate", pp: "Eaten", s: "Comer", t: "Irregular", ex: { i: ["I eat an apple a day.", "Como una manzana al día."], p: ["We ate pizza last night.", "Comimos pizza anoche."], pp: ["Have you eaten lunch yet?", "¿Ya has comido el almuerzo?"] } },
+            { i: "Fall", p: "Fell", pp: "Fallen", s: "Caer", t: "Irregular", ex: { i: ["Leaves fall in autumn.", "Las hojas caen en otoño."], p: ["He fell off his bike.", "Él se cayó de su bicicleta."], pp: ["The temperature has fallen.", "La temperatura ha caído."] } },
+            { i: "Feed", p: "Fed", pp: "Fed", s: "Alimentar", t: "Irregular", ex: { i: ["Please feed the cat.", "Por favor alimenta al gato."], p: ["She fed the baby.", "Ella alimentó al bebé."], pp: ["The animals have been fed.", "Los animales han sido alimentados."] } },
+            { i: "Deliver", p: "Delivered", pp: "Delivered", s: "Entregar", t: "Regular", ex: { i: ["They deliver mail on weekdays.", "Ellos entregan correo entre semana."], p: ["The postman delivered a package.", "El cartero entregó un paquete."], pp: ["The pizza was delivered cold.", "La pizza fue entregada fría."] } },
+            { i: "Dress", p: "Dressed", pp: "Dressed", s: "Vestir", t: "Regular", ex: { i: ["It takes her long to dress.", "Le toma mucho tiempo vestirse."], p: ["He dressed formally for the event.", "Él se vistió formalmente para el evento."], pp: ["The kids are dressed for school.", "Los niños están vestidos para la escuela."] } },
+            { i: "End", p: "Ended", pp: "Ended", s: "Terminar", t: "Regular", ex: { i: ["The movie will end soon.", "La película terminará pronto."], p: ["The war ended in 1945.", "La guerra terminó en 1945."], pp: ["The relationship has ended.", "La relación ha terminado."] } },
+            { i: "Enjoy", p: "Enjoyed", pp: "Enjoyed", s: "Disfrutar", t: "Regular", ex: { i: ["I enjoy reading books.", "Disfruto leer libros."], p: ["We enjoyed the party very much.", "Disfrutamos mucho la fiesta."], pp: ["I have always enjoyed his music.", "Siempre he disfrutado su música."] } },
+            { i: "Erase", p: "Erased", pp: "Erased", s: "Borrar", t: "Regular", ex: { i: ["Use a rubber to erase mistakes.", "Usa una goma para borrar errores."], p: ["She erased the message.", "Ella borró el mensaje."], pp: ["All data has been erased.", "Todos los datos han sido borrados."] } }
+          ],
+          Friday: [
+            { i: "Feel", p: "Felt", pp: "Felt", s: "Sentir", t: "Irregular", ex: { i: ["I feel very happy today.", "Me siento muy feliz hoy."], p: ["He felt cold last night.", "Él sintió frío anoche."], pp: ["I have never felt better.", "Nunca me he sentido mejor."] } },
+            { i: "Fight", p: "Fought", pp: "Fought", s: "Luchar", t: "Irregular", ex: { i: ["Soldiers fight for their country.", "Los soldados luchan por su país."], p: ["They fought a tough battle.", "Ellos lucharon una dura batalla."], pp: ["The disease can be fought.", "La enfermedad puede ser combatida."] } },
+            { i: "Find", p: "Found", pp: "Found", s: "Encontrar", t: "Irregular", ex: { i: ["Can you find my keys?", "¿Puedes encontrar mis llaves?"], p: ["I found a dollar on the street.", "Encontré un dólar en la calle."], pp: ["The missing dog was found.", "El perro perdido fue encontrado."] } },
+            { i: "Flee", p: "Fled", pp: "Fled", s: "Huir", t: "Irregular", ex: { i: ["Civilians flee from war zones.", "Los civiles huyen de zonas de guerra."], p: ["The thief fled the scene.", "El ladrón huyó de la escena."], pp: ["They have fled the country.", "Ellos han huido del país."] } },
+            { i: "Fly", p: "Flew", pp: "Flown", s: "Volar", t: "Irregular", ex: { i: ["Birds fly south in winter.", "Los pájaros vuelan al sur en invierno."], p: ["We flew to Paris last summer.", "Volamos a París el verano pasado."], pp: ["I have flown in a helicopter.", "He volado en un helicóptero."] } },
+            { i: "Forbid", p: "Forbade", pp: "Forbidden", s: "Prohibir", t: "Irregular", ex: { i: ["I forbid you to go out tonight.", "Te prohíbo salir esta noche."], p: ["The king forbade the use of magic.", "El rey prohibió el uso de la magia."], pp: ["Smoking is forbidden here.", "Fumar está prohibido aquí."] } },
+            { i: "Forget", p: "Forgot", pp: "Forgotten", s: "Olvidar", t: "Irregular", ex: { i: ["Don't forget to call me.", "No olvides llamarme."], p: ["She forgot her umbrella.", "Ella olvidó su paraguas."], pp: ["I have forgotten his name.", "He olvidado su nombre."] } },
+            { i: "Forgive", p: "Forgave", pp: "Forgiven", s: "Perdonar", t: "Irregular", ex: { i: ["Please forgive my mistake.", "Por favor perdona mi error."], p: ["He forgave her completely.", "Él la perdonó completamente."], pp: ["Her sins were forgiven.", "Sus pecados fueron perdonados."] } },
+            { i: "Freeze", p: "Froze", pp: "Frozen", s: "Helar", t: "Irregular", ex: { i: ["Water will freeze at 0 degrees.", "El agua se helará a 0 grados."], p: ["The lake froze last night.", "El lago se heló anoche."], pp: ["My computer screen has frozen.", "La pantalla de mi computadora se ha congelado (helado)."] } },
+            { i: "Get", p: "Got", pp: "Got / Gotten", s: "Obtener", t: "Irregular", ex: { i: ["Where did you get that shirt?", "¿De dónde obtuviste esa camisa?"], p: ["I got a good grade.", "Obtuve una buena calificación."], pp: ["I have got a new phone.", "He obtenido un teléfono nuevo."] } },
+            { i: "Expect", p: "Expected", pp: "Expected", s: "Esperar", t: "Regular", ex: { i: ["I expect a prompt reply.", "Espero una respuesta rápida."], p: ["She expected to win.", "Ella esperaba ganar."], pp: ["The results were expected.", "Los resultados eran esperados."] } },
+            { i: "Fill", p: "Filled", pp: "Filled", s: "Llenar", t: "Regular", ex: { i: ["Please fill the glass.", "Por favor llena el vaso."], p: ["He filled the tank with gas.", "Él llenó el tanque con gasolina."], pp: ["The room is filled with people.", "La habitación está llena de gente."] } },
+            { i: "Finish", p: "Finished", pp: "Finished", s: "Terminar", t: "Regular", ex: { i: ["I will finish the report today.", "Terminaré el reporte hoy."], p: ["She finished the race first.", "Ella terminó la carrera primero."], pp: ["The work is completely finished.", "El trabajo está completamente terminado."] } },
+            { i: "Follow", p: "Followed", pp: "Followed", s: "Seguir", t: "Regular", ex: { i: ["Follow me to the exit.", "Sígueme a la salida."], p: ["The dog followed the boy home.", "El perro siguió al niño a casa."], pp: ["The instructions were followed.", "Las instructions fueron seguidas."] } },
+            { i: "Help", p: "Helped", pp: "Helped", s: "Ayudar", t: "Regular", ex: { i: ["Can you help me with this?", "¿Puedes ayudarme con esto?"], p: ["He helped an old lady.", "Él ayudó a una anciana."], pp: ["They have helped us a lot.", "Ellos nos han ayudado mucho."] } }
+          ],
+          Saturday: [
+            { i: "Give", p: "Gave", pp: "Given", s: "Dar", t: "Irregular", ex: { i: ["Give me the book, please.", "Dame el libro, por favor."], p: ["He gave her a ring.", "Él le dio un anillo."], pp: ["I have given it some thought.", "Le he dado algo de pensamiento."] } },
+            { i: "Go", p: "Went", pp: "Gone", s: "Ir", t: "Irregular", ex: { i: ["I go to the gym on Mondays.", "Voy al gimnasio los lunes."], p: ["She went to the store.", "Ella fue a la tienda."], pp: ["They have already gone.", "Ellos ya se han ido."] } },
+            { i: "Grow", p: "Grew", pp: "Grown", s: "Crecer", t: "Irregular", ex: { i: ["Plants grow fast in spring.", "Las plantas crecen rápido en primavera."], p: ["He grew two inches this year.", "Él creció dos pulgadas este año."], pp: ["The city has grown rapidly.", "La ciudad ha crecido rápidamente."] } },
+            { i: "Grind", p: "Ground", pp: "Ground", s: "Moler", t: "Irregular", ex: { i: ["I grind my coffee beans fresh.", "Muelo mis granos de café frescos."], p: ["She ground the spices.", "Ella molió las especias."], pp: ["The wheat was ground into flour.", "El trigo fue molido en harina."] } },
+            { i: "Hang", p: "Hung", pp: "Hung", s: "Colgar", t: "Irregular", ex: { i: ["Where should I hang this painting?", "¿Dónde debería colgar esta pintura?"], p: ["He hung his coat by the door.", "Él colgó su abrigo junto a la puerta."], pp: ["The clothes are hung to dry.", "La ropa está colgada para secar."] } },
+            { i: "Have", p: "Had", pp: "Had", s: "Haber o Tener", t: "Irregular", ex: { i: ["I have two brothers.", "Tengo dos hermanos."], p: ["We had a great time.", "Tuvimos (pasamos) un gran momento."], pp: ["I have had this car for years.", "He tenido este auto por años."] } },
+            { i: "Hear", p: "Heard", pp: "Heard", s: "Oir", t: "Irregular", ex: { i: ["Can you hear that noise?", "¿Puedes oír ese ruido?"], p: ["I heard a rumor about you.", "Oí un rumor sobre ti."], pp: ["Have you heard the news?", "¿Has oído las noticias?"] } },
+            { i: "Hide", p: "Hid", pp: "Hidden", s: "Ocultar", t: "Irregular", ex: { i: ["Dogs often hide their bones.", "Los perros a menudo ocultan sus huesos."], p: ["She hid the present.", "Ella ocultó el regalo."], pp: ["The treasure is hidden.", "El treasure está oculto."] } },
+            { i: "Hit", p: "Hit", pp: "Hit", s: "Golpear", t: "Irregular", ex: { i: ["He hit the ball hard.", "Él golpeó la pelota fuerte."], p: ["The car hit a tree.", "El auto golpeó un árbol."], pp: ["He was hit by a rock.", "Él fue golpeado por una roca."] } },
+            { i: "Hold", p: "Held", pp: "Held", s: "Agarrar", t: "Irregular", ex: { i: ["Hold my hand, please.", "Agarra (sostén) mi mano, por favor."], p: ["She held the baby gently.", "Ella sostuvo al bebé suavemente."], pp: ["The meeting was held yesterday.", "La reunión fue celebrada (sostenida) ayer."] } },
+            { i: "Hurry", p: "Hurried", pp: "Hurried", s: "Apurar", t: "Regular", ex: { i: ["We must hurry to catch the bus.", "Debemos apurarnos para alcanzar el bus."], p: ["She hurried to finish the test.", "Ella se apuró para terminar el examen."], pp: ["They have hurried all morning.", "Ellos se han apurado toda la mañana."] } },
+            { i: "Intend", p: "Intended", pp: "Intended", s: "Intentar", t: "Regular", ex: { i: ["I intend to study harder.", "Tengo la intención de estudiar más duro."], p: ["She intended to call you.", "Ella tenía la intención de llamarte."], pp: ["This rule was intended for safety.", "Esta regla estaba pensada (con intención) para seguridad."] } },
+            { i: "Jump", p: "Jumped", pp: "Jumped", s: "Brincar / Saltar", t: "Regular", ex: { i: ["Frogs jump high.", "Las ranas saltan alto."], p: ["He jumped over the fence.", "Él saltó sobre la valla."], pp: ["I have never jumped from a plane.", "Nunca he saltado de un avión."] } },
+            { i: "Learn", p: "Learned", pp: "Learned", s: "Aprender", t: "Regular", ex: { i: ["I want to learn French.", "Quiero aprender francés."], p: ["She learned to drive last year.", "Ella aprendió a conducir el año pasado."], pp: ["I have learned a lot today.", "He aprendido mucho hoy."] } },
+            { i: "Like", p: "Liked", pp: "Liked", s: "Gustar", t: "Regular", ex: { i: ["I like ice cream.", "Me gusta el helado."], p: ["They liked the movie.", "A ellos les gustó la película."], pp: ["She has always liked cats.", "A ella siempre le han gustado los gatos."] } }
+          ],
+          Sunday: [
+            { i: "Hurt", p: "Hurt", pp: "Hurt", s: "Herir", t: "Irregular", ex: { i: ["My leg hurts when I walk.", "Me duele (hiere) la pierna cuando camino."], p: ["He hurt his back lifting weights.", "Él se hirió la espalda levantando pesas."], pp: ["She was badly hurt in the accident.", "Ella fue gravemente herida en el accidente."] } },
+            { i: "Keep", p: "Kept", pp: "Kept", s: "Conservar", t: "Irregular", ex: { i: ["I keep my keys in this pocket.", "Conservo (guardo) mis llaves en este bolsillo."], p: ["She kept the secret.", "Ella guardó (conservó) el secreto."], pp: ["The meat must be kept cold.", "La carne debe ser conservada fría."] } },
+            { i: "Know", p: "Knew", pp: "Known", s: "Saber Conocer", t: "Irregular", ex: { i: ["I know the answer.", "Sé la respuesta."], p: ["I knew him from school.", "Lo conocía de la escuela."], pp: ["He is known worldwide.", "Él es conocido mundialmente."] } },
+            { i: "Kneel", p: "Knelt", pp: "Knelt", s: "Arrodillarse", t: "Irregular", ex: { i: ["They kneel to pray.", "Ellos se arrodillan para rezar."], p: ["He knelt before the king.", "Él se arrodilló ante el rey."], pp: ["She has knelt there for hours.", "Ella se ha arrodillado ahí por horas."] } },
+            { i: "Knit", p: "Knit", pp: "Knit", s: "Hacer punto", t: "Irregular", ex: { i: ["My grandmother likes to knit.", "A mi abuela le gusta hacer punto."], p: ["She knit a sweater for me.", "Ella tejió (hizo punto) un suéter para mí."], pp: ["This scarf is hand-knit.", "Esta bufanda está hecha a punto a mano."] } },
+            { i: "Lay", p: "Laid", pp: "Laid", s: "Poner", t: "Irregular", ex: { i: ["Birds lay eggs.", "Los pájaros ponen huevos."], p: ["He laid the book on the table.", "Él puso el libro sobre la mesa."], pp: ["The foundation was laid firmly.", "Los cimientos fueron puestos firmemente."] } },
+            { i: "Lead", p: "Led", pp: "Led", s: "Conducir", t: "Irregular", ex: { i: ["The guide will lead the tour.", "El guía conducirá el tour."], p: ["She led the team to victory.", "Ella condujo al equipo a la victoria."], pp: ["The discussion has led to nowhere.", "La discusión no ha llevado (conducido) a nada."] } },
+            { i: "Lean", p: "Leant / Leaned", pp: "Leant / Leaned", s: "Apoyarse", t: "Irregular", ex: { i: ["Don't lean against the glass.", "No te apoyes contra el cristal."], p: ["He leant on the wall.", "Él se apoyó en la pared."], pp: ["The ladder is leant against the tree.", "La escalera está apoyada contra el árbol."] } },
+            { i: "Leap", p: "Leapt", pp: "Leapt", s: "Brincar", t: "Irregular", ex: { i: ["Look before you leap.", "Mira antes de brincar."], p: ["The frog leapt into the pond.", "La rana brincó al estanque."], pp: ["He has leapt over higher hurdles.", "Él ha brincado sobre vallas más altas."] } },
+            { i: "Leave", p: "Left", pp: "Left", s: "Dejar", t: "Irregular", ex: { i: ["I usually leave work at 5 PM.", "Usualmente dejo el trabajo a las 5 PM."], p: ["He left his umbrella on the bus.", "Él dejó su paraguas en el autobús."], pp: ["The train has already left.", "El tren ya se ha ido (ha dejado la estación)."] } },
+            { i: "Listen", p: "Listened", pp: "Listened", s: "Escuchar", t: "Regular", ex: { i: ["I like to listen to music.", "Me gusta escuchar música."], p: ["She listened carefully.", "Ella escuchó cuidadosamente."], pp: ["We have listened to your advice.", "Hemos escuchado tu consejo."] } },
+            { i: "Live", p: "Lived", pp: "Lived", s: "Vivir", t: "Regular", ex: { i: ["I live in a small apartment.", "Vivo en un departamento pequeño."], p: ["He lived in Spain for two years.", "Él vivió en España por dos años."], pp: ["They have lived here since 2010.", "Ellos han vivido aquí desde 2010."] } },
+            { i: "Look", p: "Looked", pp: "Looked", s: "Mirar", t: "Regular", ex: { i: ["Look at this picture.", "Mira esta foto."], p: ["She looked at me.", "Ella me miró."], pp: ["I have looked everywhere for my keys.", "He mirado en todas partes buscando mis llaves."] } },
+            { i: "Love", p: "Loved", pp: "Loved", s: "Amar", t: "Regular", ex: { i: ["I love chocolate.", "Amo el chocolate."], p: ["They loved the surprise.", "A ellos les encantó (amaron) la sorpresa."], pp: ["She is loved by everyone.", "Ella es amada por todos."] } },
+            { i: "Miss", p: "Missed", pp: "Missed", s: "Extrañar", t: "Regular", ex: { i: ["I miss my family.", "Extraño a mi familia."], p: ["He missed the train.", "Él perdió (extrañó) el tren."], pp: ["I have really missed you.", "Realmente te he extrañado."] } },
+            { i: "Need", p: "Needed", pp: "Needed", s: "Necesitar", t: "Regular", ex: { i: ["I need a vacation.", "Necesito unas vacaciones."], p: ["She needed help with her homework.", "Ella necesitaba ayuda con su tarea."], pp: ["Repairs are badly needed.", "Las reparaciones son muy necesitadas."] } }
+          ]
+        };
 
-        function speak(text, rate = 0.8) {
+        const phrasalVerbsData = {
+          Monday: [
+            { pv: "get up", s: "levantarse", ex: "I get up at 7." },
+            { pv: "wake up", s: "despertarse", ex: "I wake up early." },
+            { pv: "go out", s: "salir", ex: "We went out yesterday." },
+            { pv: "come back", s: "regresar", ex: "I'll come back later." },
+            { pv: "go back", s: "regresar", ex: "I need to go back home." },
+            { pv: "come in", s: "entrar", ex: "Come in, please." },
+            { pv: "go on", s: "continuar", ex: "Go on, I'm listening." },
+            { pv: "find out", s: "descubrir", ex: "I found out the truth." },
+            { pv: "look for", s: "buscar", ex: "I'm looking for my keys." },
+            { pv: "look at", s: "mirar", ex: "Look at this!" },
+            { pv: "look like", s: "parecerse", ex: "You look like your father." },
+            { pv: "look after", s: "cuidar", ex: "She looks after her brother." },
+            { pv: "give up", s: "rendirse", ex: "Don't give up." },
+            { pv: "pick up", s: "recoger", ex: "Pick up the phone." },
+            { pv: "put on", s: "ponerse ropa", ex: "Put on your jacket." }
+          ],
+          Tuesday: [
+            { pv: "take off", s: "quitarse / despegar", ex: "Take off your shoes." },
+            { pv: "turn on", s: "encender", ex: "Turn on the TV." },
+            { pv: "turn off", s: "apagar", ex: "Turn off the lights." },
+            { pv: "turn up", s: "subir volumen", ex: "Turn up the music." },
+            { pv: "turn down", s: "bajar volumen", ex: "Turn down the music." },
+            { pv: "sit down", s: "sentarse", ex: "Sit down, please." },
+            { pv: "stand up", s: "ponerse de pie", ex: "Stand up!" },
+            { pv: "hang out", s: "pasar el rato", ex: "I hang out with my friends." },
+            { pv: "get back", s: "regresar", ex: "What time did you get back?" },
+            { pv: "get in", s: "entrar/llegar", ex: "What time did you get in?" },
+            { pv: "get out", s: "salir", ex: "Get out of the car." },
+            { pv: "get on", s: "subir/abordar", ex: "Get on the bus." },
+            { pv: "get off", s: "bajarse", ex: "Get off the bus." },
+            { pv: "carry on", s: "continuar", ex: "Carry on with your work." },
+            { pv: "work out", s: "hacer ejercicio", ex: "I work out every day." }
+          ],
+          Wednesday: [
+            { pv: "bring back", s: "traer de vuelta", ex: "Please bring back my book." },
+            { pv: "bring up", s: "mencionar/criar", ex: "Don't bring up that topic." },
+            { pv: "call back", s: "devolver llamada", ex: "I'll call you back later." },
+            { pv: "call off", s: "cancelar", ex: "They called off the meeting." },
+            { pv: "calm down", s: "calmarse", ex: "You need to calm down." },
+            { pv: "check in", s: "registrarse", ex: "We need to check in at the hotel." },
+            { pv: "check out", s: "salir de hotel", ex: "We check out at noon." },
+            { pv: "come across", s: "encontrarse con", ex: "I came across an old photo." },
+            { pv: "come up", s: "surgir", ex: "Something came up at work." },
+            { pv: "come up with", s: "idear", ex: "He came up with a great idea." },
+            { pv: "cut off", s: "cortar", ex: "The phone call was cut off." },
+            { pv: "deal with", s: "lidiar con", ex: "I have to deal with this problem." },
+            { pv: "drop off", s: "dejar a alguien", ex: "I'll drop you off at the station." },
+            { pv: "end up", s: "terminar", ex: "We ended up going home." },
+            { pv: "fill out", s: "llenar formulario", ex: "Please fill out this form." }
+          ],
+          Thursday: [
+            { pv: "fill in", s: "completar", ex: "Fill in the blanks." },
+            { pv: "get along", s: "llevarse bien", ex: "I get along with my brother." },
+            { pv: "get away", s: "escapar", ex: "I just want to get away for the weekend." },
+            { pv: "get over", s: "superar", ex: "She is getting over a cold." },
+            { pv: "get through", s: "comunicarse", ex: "I couldn't get through to him." },
+            { pv: "give back", s: "devolver", ex: "Give me back my pen." },
+            { pv: "give away", s: "regalar", ex: "He gave away his old clothes." },
+            { pv: "go ahead", s: "proceder", ex: "Go ahead and start without me." },
+            { pv: "go through", s: "pasar por/revisar", ex: "Let's go through the details again." },
+            { pv: "grow up", s: "crecer", ex: "I grew up in London." },
+            { pv: "keep up", s: "mantener el ritmo", ex: "Keep up the good work." },
+            { pv: "let down", s: "decepcionar", ex: "Please don't let me down." },
+            { pv: "log in", s: "iniciar sesión", ex: "You need to log in first." },
+            { pv: "log out", s: "cerrar sesión", ex: "Don't forget to log out." },
+            { pv: "make up", s: "inventar/reconciliarse", ex: "They kissed and made up." }
+          ],
+          Friday: [
+            { pv: "move on", s: "seguir adelante", ex: "It's time to move on." },
+            { pv: "pass away", s: "morir", ex: "His grandfather passed away." },
+            { pv: "pay back", s: "devolver dinero", ex: "I'll pay you back tomorrow." },
+            { pv: "run out of", s: "quedarse sin", ex: "We ran out of milk." },
+            { pv: "set up", s: "configurar", ex: "We need to set up the equipment." },
+            { pv: "show up", s: "aparecer", ex: "He didn't show up for the meeting." },
+            { pv: "slow down", s: "reducir velocidad", ex: "Slow down, you're driving too fast." },
+            { pv: "speed up", s: "acelerar", ex: "Speed up or we'll be late." },
+            { pv: "take care of", s: "cuidar", ex: "Take care of yourself." },
+            { pv: "take back", s: "retirar lo dicho", ex: "I take back what I said." },
+            { pv: "take up", s: "comenzar actividad", ex: "I decided to take up tennis." },
+            { pv: "talk about", s: "hablar sobre", ex: "What are you talking about?" },
+            { pv: "think about", s: "pensar en", ex: "I'll think about it." },
+            { pv: "throw away", s: "tirar", ex: "Don't throw away that paper." },
+            { pv: "try on", s: "probarse ropa", ex: "Try on this shirt." }
+          ],
+          Saturday: [
+            { pv: "try out", s: "probar", ex: "I want to try out the new car." },
+            { pv: "use up", s: "consumir", ex: "We used up all the sugar." },
+            { pv: "wait for", s: "esperar", ex: "I'm waiting for the bus." },
+            { pv: "watch out", s: "tener cuidado", ex: "Watch out for the ice!" },
+            { pv: "write down", s: "anotar", ex: "Write down his phone number." },
+            { pv: "break down", s: "descomponerse", ex: "My car broke down." },
+            { pv: "break up", s: "terminar relación", ex: "They broke up last week." },
+            { pv: "break into", s: "entrar por fuerza", ex: "Someone broke into my house." },
+            { pv: "break out", s: "escapar/comenzar", ex: "A fire broke out in the building." },
+            { pv: "bring in", s: "introducir", ex: "They plan to bring in a new law." },
+            { pv: "come along", s: "acompañar/progresar", ex: "Do you want to come along?" },
+            { pv: "come over", s: "venir a casa", ex: "Come over to my place." },
+            { pv: "count on", s: "contar con", ex: "You can count on me." },
+            { pv: "figure out", s: "resolver", ex: "I can't figure out this math problem." },
+            { pv: "get rid of", s: "deshacerse de", ex: "I need to get rid of old clothes." }
+          ],
+          Sunday: [
+            { pv: "go over", s: "revisar", ex: "Let's go over the plan." },
+            { pv: "hold on", s: "esperar", ex: "Hold on a minute, please." },
+            { pv: "keep on", s: "continuar", ex: "Keep on working hard." },
+            { pv: "leave out", s: "omitir", ex: "Don't leave out any details." },
+            { pv: "look up", s: "buscar información", ex: "Look up the word in the dictionary." },
+            { pv: "pay for", s: "pagar", ex: "Let me pay for dinner." },
+            { pv: "put away", s: "guardar", ex: "Put your toys away." },
+            { pv: "put off", s: "posponer", ex: "Never put off until tomorrow what you can do today." },
+            { pv: "put up with", s: "tolerar", ex: "I can't put up with this noise." },
+            { pv: "run into", s: "encontrarse con", ex: "I ran into my old teacher." },
+            { pv: "set off", s: "iniciar viaje", ex: "We set off early in the morning." },
+            { pv: "sort out", s: "solucionar", ex: "We need to sort out this mess." },
+            { pv: "take out", s: "sacar", ex: "Please take out the trash." },
+            { pv: "throw up", s: "vomitar", ex: "The smell made me want to throw up." },
+            { pv: "work on", s: "trabajar en", ex: "I'm working on a new project." }
+          ]
+        };
+
+        const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        
+        const PARTICIPLE_TABS = [
+            { id: 'study', icon: 'book-open', label: 'Study' },
+            { id: 'context', icon: 'message-square', label: 'Context' },
+            { id: 'swipe', icon: 'zap', label: 'Swipe' },
+            { id: 'connect', icon: 'link', label: 'Connect' },
+            { id: 'scramble', icon: 'shuffle', label: 'Scramble' },
+            { id: 'exam', icon: 'award', label: 'Exam' }
+        ];
+
+        const PHRASAL_TABS = [
+            { id: 'study', icon: 'book-open', label: 'Study' },
+            { id: 'write', icon: 'edit-3', label: 'Meaning' },
+            { id: 'exam', icon: 'award', label: 'Quiz' }
+        ];
+
+        // --- GLOBAL STATE & UTILS ---
+        let state = {
+            day: 'Monday',
+            mode: 'participles', // 'participles' | 'phrasals'
+            tab: 'study',
+            masteryData: JSON.parse(localStorage.getItem('verbMastery') || '{}')
+        };
+
+        let currentActiveModule = null; // Holds the cleanup function of the current mode
+
+        const speakText = (text, rate = 0.8) => {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
@@ -428,29 +365,70 @@
                 utterance.rate = rate;
                 window.speechSynthesis.speak(utterance);
             }
-        }
+        };
+        // Expose globally for inline onclick handlers
+        window.speakText = speakText;
 
-        function normalizeStr(str) {
-            return str.toLowerCase().trim().replace(/[/]/g, '');
-        }
+        const updateMastery = (verbInfinitive, isCorrect) => {
+            const currentScore = state.masteryData[verbInfinitive] || 0;
+            const newScore = isCorrect ? Math.min(currentScore + 1, 3) : Math.max(currentScore - 1, -2);
+            state.masteryData[verbInfinitive] = newScore;
+            localStorage.setItem('verbMastery', JSON.stringify(state.masteryData));
+        };
 
-        function checkForm(input, correct) {
-            const normInput = normalizeStr(input);
-            const normCorrectParts = correct.toLowerCase().split('/').map(s => s.trim());
+        const checkFormMatch = (input, correct) => {
+            const normInput = input.toLowerCase().trim().replace(/[/]/g, '');
+            const normCorrectParts = correct.toLowerCase().split('/').map(s => s.trim().replace(/[/]/g, ''));
             return normCorrectParts.some(part => normInput === part || normInput.includes(part));
-        }
+        };
 
-        /* --- Rendering Engine --- */
+        // --- UI SHELL RENDERING ---
+        function renderShell() {
+            // Update Header Colors and Text
+            const header = document.getElementById('main-header');
+            const icon = document.getElementById('app-icon');
+            const titleText = document.getElementById('app-title-text');
+            const subtitle = document.getElementById('app-subtitle');
+            
+            if (state.mode === 'phrasals') {
+                header.className = 'bg-gradient-to-r text-white p-4 sm:p-6 shadow-md sticky top-0 z-40 transition-colors duration-500 from-indigo-700 to-purple-600';
+                icon.setAttribute('data-lucide', 'layers');
+                titleText.textContent = 'Phrasal Verbs';
+                subtitle.textContent = 'Daily Phrasal Verbs Training';
+            } else {
+                header.className = 'bg-gradient-to-r text-white p-4 sm:p-6 shadow-md sticky top-0 z-40 transition-colors duration-500 from-red-700 to-orange-600';
+                icon.setAttribute('data-lucide', 'target');
+                titleText.textContent = 'Participle Challenge';
+                subtitle.textContent = 'Intensive Training: Past Participle Only';
+            }
+            
+            // Re-render icon if changed
+            lucide.createIcons({ nameAttr: 'data-lucide', root: document.getElementById('app-title') });
 
-        // Day Selector
-        function renderDaySelector() {
-            const container = document.getElementById('day-selector');
-            container.innerHTML = DAYS.map(day => `
+            // Update Mode Switchers
+            const modes = ['part', 'phra'];
+            modes.forEach(m => {
+                const isPart = m === 'part';
+                const isActive = (isPart && state.mode === 'participles') || (!isPart && state.mode === 'phrasals');
+                
+                ['desk', 'mob'].forEach(device => {
+                    const btn = document.getElementById(`btn-mode-${m}-${device}`);
+                    if (isActive) {
+                        btn.className = `px-4 py-2 flex-1 rounded-lg text-sm font-bold transition-all bg-white shadow-sm ${isPart ? 'text-red-700' : 'text-indigo-700'}`;
+                    } else {
+                        btn.className = `px-4 py-2 flex-1 rounded-lg text-sm font-bold transition-all text-white hover:bg-white/10`;
+                    }
+                });
+            });
+
+            // Render Day Selector
+            document.getElementById('current-day-display').textContent = state.day;
+            const daysHtml = DAYS.map(day => `
                 <button
-                    onclick="setDay('${day}')"
+                    onclick="switchDay('${day}')"
                     class="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-bold transition-all flex items-center gap-1.5 snap-start text-sm sm:text-base ${
-                        currentDay === day 
-                        ? 'bg-yellow-400 text-red-900 shadow-sm' 
+                        state.day === day 
+                        ? `bg-yellow-400 shadow-sm ${state.mode === 'phrasals' ? 'text-indigo-900' : 'text-red-900'}` 
                         : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
                     }"
                 >
@@ -458,561 +436,1029 @@
                     ${day}
                 </button>
             `).join('');
-            lucide.createIcons();
-        }
+            document.getElementById('day-selector-container').innerHTML = daysHtml;
+            lucide.createIcons({ root: document.getElementById('day-selector-container') });
 
-        // Bottom/Top Navigation Tabs
-        function renderTabs() {
-            const tabs = [
-                { id: 'study', icon: 'book-open', label: 'Study' },
-                { id: 'write', icon: 'edit-3', label: 'Write' },
-                { id: 'spell', icon: 'mic', label: 'Spell' },
-                { id: 'listen', icon: 'headphones', label: 'Listen' },
-                { id: 'exam', icon: 'award', label: 'Exam' }
-            ];
-
-            const container = document.getElementById('mode-tabs');
-            container.innerHTML = tabs.map(tab => `
+            // Render Bottom Navigation
+            const tabs = state.mode === 'participles' ? PARTICIPLE_TABS : PHRASAL_TABS;
+            const navHtml = tabs.map(tab => {
+                const isActive = state.tab === tab.id;
+                const activeColor = state.mode === 'participles' ? 'red' : 'indigo';
+                return `
                 <button
-                    onclick="setTab('${tab.id}')"
+                    onclick="switchTab('${tab.id}')"
                     class="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 md:px-4 md:py-3 w-full md:w-auto md:flex-1 rounded-xl font-semibold transition-colors text-[10px] md:text-base snap-center ${
-                        activeTab === tab.id 
-                        ? 'text-red-600 md:bg-red-50 md:border md:border-red-100' 
+                        isActive 
+                        ? `text-${activeColor}-600 md:bg-${activeColor}-50 md:border md:border-${activeColor}-100` 
                         : 'text-slate-500 hover:text-slate-800 md:hover:bg-slate-50 border border-transparent'
                     }"
                 >
-                    <div class="${activeTab === tab.id ? 'bg-red-100 p-1.5 rounded-lg md:bg-transparent md:p-0' : 'p-1.5'}">
+                    <div class="${isActive ? `bg-${activeColor}-100 p-1.5 rounded-lg md:bg-transparent md:p-0` : 'p-1.5'} flex items-center justify-center">
                         <i data-lucide="${tab.icon}" class="w-5 h-5 md:w-[18px] md:h-[18px]"></i>
                     </div>
                     <span>${tab.label}</span>
                 </button>
-            `).join('');
-            lucide.createIcons();
+            `}).join('');
+            document.getElementById('bottom-nav-container').innerHTML = navHtml;
+            lucide.createIcons({ root: document.getElementById('bottom-nav-container') });
         }
 
-        function setDay(day) {
-            currentDay = day;
-            document.getElementById('current-day-display').textContent = day;
-            setTab('study'); 
-            renderDaySelector();
+        function switchMode(mode) {
+            state.mode = mode;
+            state.tab = 'study';
+            renderApp();
         }
 
-        function setTab(tab) {
-            activeTab = tab;
-            renderTabs();
-            renderContent();
-            window.scrollTo(0, 0); // Scroll top on tab change for mobile
+        function switchDay(day) {
+            state.day = day;
+            state.tab = 'study';
+            renderApp();
         }
 
-        let expandedRowIndex = null;
-        function toggleRow(index) {
-            expandedRowIndex = expandedRowIndex === index ? null : index;
-            renderStudyMode();
+        function switchTab(tab) {
+            state.tab = tab;
+            renderApp();
+            window.scrollTo(0, 0);
         }
 
-        function renderStudyMode() {
-            const verbs = planData[currentDay];
+        function renderApp() {
+            renderShell();
+            const mainEl = document.getElementById('main-content');
             
-            // Using a modern Card-based layout which is immensely better for Mobile
-            let content = `
+            // Clean up previous mode intervals/listeners
+            if (currentActiveModule && currentActiveModule.cleanup) {
+                currentActiveModule.cleanup();
+                currentActiveModule = null;
+            }
+
+            // Clear main content
+            mainEl.innerHTML = '';
+
+            // Route to proper module
+            if (state.mode === 'participles') {
+                switch(state.tab) {
+                    case 'study': currentActiveModule = initStudyMode(mainEl); break;
+                    case 'context': currentActiveModule = initContextMode(mainEl); break;
+                    case 'swipe': currentActiveModule = initSwipeMode(mainEl); break;
+                    case 'connect': currentActiveModule = initConnectMode(mainEl); break;
+                    case 'scramble': currentActiveModule = initScrambleMode(mainEl); break;
+                    case 'exam': currentActiveModule = initExamMode(mainEl); break;
+                    default: currentActiveModule = initStudyMode(mainEl);
+                }
+            } else {
+                switch(state.tab) {
+                    case 'study': currentActiveModule = initPhrasalStudyMode(mainEl); break;
+                    case 'write': currentActiveModule = initPhrasalWriteMode(mainEl); break;
+                    case 'exam': currentActiveModule = initPhrasalExamMode(mainEl); break;
+                    default: currentActiveModule = initPhrasalStudyMode(mainEl);
+                }
+            }
+            
+            lucide.createIcons({ root: mainEl });
+        }
+
+        // --- MODULES (Participles) ---
+
+        function initStudyMode(container) {
+            const verbs = planData[state.day] || [];
+            let expandedIndex = null;
+
+            function render() {
+                let html = `
+                <div class="animate-fade-in">
+                    <div class="mb-4 flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Daily List</h2>
+                            <p class="text-xs text-slate-500">${verbs.length} verbs today</p>
+                        </div>
+                        <div class="text-xs text-slate-400 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+                            Tap ↕ for examples
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                `;
+
+                verbs.forEach((v, index) => {
+                    const score = state.masteryData[v.i] || 0;
+                    const isExpanded = expandedIndex === index;
+                    
+                    const scoreDots = [1, 2, 3].map(i => 
+                        `<div class="w-2 h-2 rounded-full ${score >= i ? 'bg-emerald-400' : 'bg-slate-200'}"></div>`
+                    ).join('');
+
+                    html += `
+                        <div class="bg-white rounded-2xl shadow-sm border ${isExpanded ? 'border-red-300 ring-2 ring-red-50' : 'border-slate-200'} overflow-hidden transition-all">
+                            <div class="p-4 sm:p-5 flex justify-between items-start cursor-pointer" onclick="window.studyModeToggle(${index})">
+                                <div>
+                                    <h3 class="text-xl sm:text-2xl font-black text-slate-800">${v.i}</h3>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-sm text-slate-500">Past: <span class="font-semibold text-slate-700">${v.p}</span></span>
+                                        <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-md ${v.t === 'Regular' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'}">${v.t}</span>
+                                    </div>
+                                    <p class="text-sm font-medium text-slate-600 mt-2">${v.s}</p>
+                                </div>
+                                <div class="flex flex-col items-end gap-3">
+                                    <button onclick="event.stopPropagation(); speakText('${v.i}, ${v.p}, ${v.pp}')" class="p-2.5 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-full transition-colors flex items-center justify-center">
+                                        <i data-lucide="volume-2" class="w-5 h-5"></i>
+                                    </button>
+                                    <div class="flex gap-1">${scoreDots}</div>
+                                </div>
+                            </div>
+                            <div class="mx-4 mb-4 bg-red-50 p-3 sm:p-4 rounded-xl border border-red-100 flex justify-between items-center cursor-pointer" onclick="window.studyModeToggle(${index})">
+                                <div>
+                                    <p class="text-[10px] font-bold text-red-400 uppercase tracking-wider">Goal: Past Participle</p>
+                                    <p class="text-xl sm:text-2xl font-black text-red-700 mt-0.5">${v.pp}</p>
+                                </div>
+                                <i data-lucide="${isExpanded ? 'chevron-up' : 'chevron-down'}" class="text-red-400 w-5 h-5"></i>
+                            </div>
+                    `;
+
+                    if (isExpanded) {
+                        html += `
+                            <div class="bg-slate-50 border-t border-slate-100 p-4 space-y-3">
+                                ${createExampleCard('Infinitive', v.form, v.ex.i[0], v.ex.i[1], false)}
+                                ${createExampleCard('Simple Past', v.p, v.ex.p[0], v.ex.p[1], false)}
+                                ${createExampleCard('Past Participle', v.pp, v.ex.pp[0], v.ex.pp[1], true)}
+                            </div>
+                        `;
+                    }
+                    html += `</div>`;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML = html;
+                lucide.createIcons({ root: container });
+            }
+
+            function createExampleCard(title, form, eng, esp, highlight) {
+                const escapedEng = eng.replace(/'/g, "\\'");
+                return `
+                    <div class="p-3 rounded-lg relative ${highlight ? 'bg-red-100 border border-red-200 shadow-sm' : 'bg-white border border-slate-200'}">
+                        <div class="text-[10px] font-bold uppercase tracking-wide mb-1 ${highlight ? 'text-red-600' : 'text-slate-400'}">${title}</div>
+                        <div class="text-slate-800 font-semibold text-sm pr-8">"${eng}"</div>
+                        <div class="text-slate-500 text-xs mt-0.5">"${esp}"</div>
+                        <button onclick="speakText('${escapedEng}')" class="absolute top-3 right-3 p-1 rounded-full transition-colors flex justify-center items-center ${highlight ? 'text-red-500 bg-red-200 hover:bg-red-300' : 'text-slate-400 bg-slate-100 hover:bg-slate-200'}">
+                            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                        </button>
+                    </div>
+                `;
+            }
+
+            window.studyModeToggle = (idx) => {
+                expandedIndex = expandedIndex === idx ? null : idx;
+                render();
+            };
+
+            render();
+            return { cleanup: () => { delete window.studyModeToggle; } };
+        }
+
+        function initContextMode(container) {
+            const verbs = planData[state.day] || [];
+            let currentVerb = null;
+            let options = [];
+            let status = 'playing';
+            let selectedOption = null;
+
+            function getNewChallenge() {
+                currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
+                const correctPP = currentVerb.pp.split('/')[0];
+                let newOptions = [correctPP];
+                
+                const simplePast = currentVerb.p.split('/')[0];
+                if (!newOptions.includes(simplePast)) newOptions.push(simplePast);
+                
+                while (newOptions.length < 3) {
+                    const randomPP = verbs[Math.floor(Math.random() * verbs.length)].pp.split('/')[0];
+                    if (!newOptions.includes(randomPP)) newOptions.push(randomPP);
+                }
+                
+                options = newOptions.sort(() => Math.random() - 0.5);
+                status = 'playing';
+                selectedOption = null;
+                render();
+            }
+
+            function render() {
+                if (!currentVerb) return;
+                const correctPP = currentVerb.pp.split('/')[0];
+                const originalSentence = currentVerb.ex.pp[0];
+                const blankedSentence = originalSentence.replace(new RegExp(`\\b${correctPP}\\b`, 'i'), '_________');
+                
+                let html = `
+                <div class="max-w-md mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 mt-4 md:mt-10 animate-zoom-in">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl font-extrabold text-slate-800">Sentence Master</h2>
+                        <p class="text-xs text-slate-500 mt-1">Complete the sentence with the <strong class="text-red-500">Past Participle</strong>.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6 text-center shadow-inner relative">
+                        <p class="text-sm font-bold text-slate-400 mb-2 uppercase tracking-wide">Verb: ${currentVerb.i}</p>
+                        <p class="text-xl font-semibold text-slate-700 leading-relaxed">
+                            ${status === 'playing' ? blankedSentence : originalSentence.replace(new RegExp(`\\b${correctPP}\\b`, 'i'), `<span class="text-${status === 'correct' ? 'emerald' : 'red'}-600 font-black border-b-2 border-${status === 'correct' ? 'emerald' : 'red'}-600 pb-0.5">${correctPP}</span>`)}
+                        </p>
+                        <p class="text-xs text-slate-400 mt-4 italic">"${currentVerb.ex.pp[1]}"</p>
+                    </div>
+                    <div class="space-y-3">
+                `;
+
+                options.forEach(opt => {
+                    let btnClass = 'bg-white border-slate-200 hover:border-red-400 hover:bg-red-50 text-slate-700 active:scale-95';
+                    if (status !== 'playing') {
+                        if (opt === correctPP) btnClass = 'bg-emerald-50 border-emerald-400 text-emerald-700';
+                        else if (opt === selectedOption) btnClass = 'bg-red-50 border-red-400 text-red-700';
+                        else btnClass = 'bg-slate-50 border-slate-200 text-slate-400 opacity-50';
+                    }
+                    html += `<button onclick="window.contextHandleSelect('${opt}')" ${status !== 'playing' ? 'disabled' : ''} class="w-full p-4 rounded-xl font-bold text-lg border-2 transition-all ${btnClass}">${opt}</button>`;
+                });
+
+                html += `</div>`;
+                
+                if (status !== 'playing') {
+                    html += `
+                        <button onclick="window.contextNext()" class="w-full mt-6 bg-slate-900 text-white font-bold text-lg py-3.5 rounded-xl hover:bg-slate-800 transition-transform active:scale-95 flex items-center justify-center gap-2">
+                            Next Sentence <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    `;
+                }
+                
+                html += `</div>`;
+                container.innerHTML = html;
+                lucide.createIcons({ root: container });
+            }
+
+            window.contextHandleSelect = (opt) => {
+                if (status !== 'playing') return;
+                const correctPP = currentVerb.pp.split('/')[0];
+                const isCorrect = opt === correctPP;
+                
+                selectedOption = opt;
+                status = isCorrect ? 'correct' : 'incorrect';
+                updateMastery(currentVerb.i, isCorrect);
+                
+                if (isCorrect) speakText("Excellent!");
+                else {
+                    speakText("Incorrect.");
+                    setTimeout(() => speakText(correctPP), 1000);
+                }
+                render();
+            };
+
+            window.contextNext = getNewChallenge;
+            getNewChallenge();
+
+            return { cleanup: () => { delete window.contextHandleSelect; delete window.contextNext; } };
+        }
+
+        function initSwipeMode(container) {
+            const verbs = planData[state.day] || [];
+            let card = null;
+            let lives = 3;
+            let score = 0;
+            let timeLeft = 5;
+            let gameOver = false;
+            let animating = '';
+            let timerInterval;
+
+            function generateCard() {
+                const verb = verbs[Math.floor(Math.random() * verbs.length)];
+                const isActuallyCorrect = Math.random() > 0.5;
+                let displayPP = verb.pp.split('/')[0];
+                
+                if (!isActuallyCorrect) {
+                    if (Math.random() > 0.5) {
+                        let randomVerb;
+                        do { randomVerb = verbs[Math.floor(Math.random() * verbs.length)]; } while (randomVerb.i === verb.i);
+                        displayPP = randomVerb.pp.split('/')[0];
+                    } else {
+                        displayPP = verb.i + (verb.i.endsWith('e') ? 'd' : 'ed');
+                    }
+                }
+                card = { infinitive: verb.i, display: displayPP, isCorrect: isActuallyCorrect, translation: verb.s };
+                timeLeft = 4;
+                animating = '';
+                render();
+                startTimer();
+            }
+
+            function startTimer() {
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        handleSwipe(false, true); // Timeout
+                    } else {
+                        updateTimeDisplay();
+                    }
+                }, 1000);
+            }
+
+            function updateTimeDisplay() {
+                const el = document.getElementById('swipe-time');
+                if (el) {
+                    el.innerHTML = `<i data-lucide="timer" class="w-4 h-4 inline"></i> ${timeLeft}s`;
+                    lucide.createIcons({ root: el });
+                }
+            }
+
+            function render() {
+                if (gameOver) {
+                    container.innerHTML = `
+                        <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center mt-4 md:mt-10 animate-zoom-in">
+                            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="zap" class="w-10 h-10 text-red-500"></i>
+                            </div>
+                            <h2 class="text-3xl font-black text-slate-800 mb-2">Game Over!</h2>
+                            <p class="text-slate-500 mb-6">You survived and scored:</p>
+                            <p class="text-5xl font-black text-red-500 mb-8">${score}</p>
+                            <button onclick="window.swipeRestart()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl active:scale-95 transition-transform">Play Again</button>
+                        </div>
+                    `;
+                    lucide.createIcons({ root: container });
+                    return;
+                }
+                if (!card) return;
+
+                let hearts = '';
+                for (let i = 1; i <= 3; i++) {
+                    hearts += `<i data-lucide="heart" class="w-6 h-6 ${i <= lives ? 'fill-red-500 text-red-500' : 'fill-slate-200 text-slate-200'}"></i>`;
+                }
+
+                let animClass = 'translate-x-0 rotate-0 opacity-100';
+                if (animating === 'left') animClass = '-translate-x-full rotate-[-15deg] opacity-0';
+                else if (animating === 'right') animClass = 'translate-x-full rotate-[15deg] opacity-0';
+
+                container.innerHTML = `
+                    <div class="max-w-md mx-auto bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-200 text-center mt-4 md:mt-10 relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-6 px-2">
+                            <div class="flex gap-1">${hearts}</div>
+                            <div class="bg-white px-3 py-1 rounded-lg border font-bold text-slate-700 shadow-sm">
+                                Score: <span class="text-red-500">${score}</span>
+                            </div>
+                        </div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Is this the correct Participle?</p>
+                        
+                        <div class="relative h-64 sm:h-72 w-full perspective-1000">
+                            <div id="swipe-card" class="absolute w-full h-full bg-white rounded-2xl shadow-lg border-2 border-slate-100 flex flex-col items-center justify-center p-6 transition-all duration-300 ${animClass}">
+                                <div id="swipe-time" class="absolute top-4 right-4 flex items-center gap-1 text-slate-400 font-bold text-sm bg-slate-50 px-2 py-1 rounded-md">
+                                    <i data-lucide="timer" class="w-4 h-4"></i> ${timeLeft}s
+                                </div>
+                                <p class="text-slate-400 font-medium mb-1">${card.translation}</p>
+                                <h3 class="text-3xl font-bold text-slate-800 mb-4">${card.infinitive}</h3>
+                                <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                                    <i data-lucide="arrow-right" class="text-slate-400 w-6 h-6 rotate-90"></i>
+                                </div>
+                                <h3 class="text-4xl font-black text-red-600 tracking-wide">${card.display}</h3>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between gap-4 mt-8">
+                            <button onclick="window.swipeHandle(false)" class="flex-1 bg-white border-2 border-slate-200 text-slate-600 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-red-50 hover:border-red-200 hover:text-red-600 active:scale-95 transition-all shadow-sm">
+                                <i data-lucide="x-circle" class="w-6 h-6"></i> False
+                            </button>
+                            <button onclick="window.swipeHandle(true)" class="flex-1 bg-white border-2 border-slate-200 text-slate-600 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-600 active:scale-95 transition-all shadow-sm">
+                                <i data-lucide="check-circle-2" class="w-6 h-6"></i> True
+                            </button>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-4 hidden md:block">Use ⬅️ y ➡️ arrows on keyboard</p>
+                    </div>
+                `;
+                lucide.createIcons({ root: container });
+            }
+
+            function handleSwipe(userSaysCorrect, isTimeout = false) {
+                if (animating || gameOver) return;
+                clearInterval(timerInterval);
+                animating = userSaysCorrect ? 'right' : 'left';
+                render(); // trigger animation class
+                
+                const success = isTimeout ? false : (userSaysCorrect === card.isCorrect);
+
+                setTimeout(() => {
+                    if (success) {
+                        score += 10;
+                        speakText('Ding', 2.0);
+                    } else {
+                        lives -= 1;
+                        speakText('Wrong', 1.5);
+                        if (lives <= 0) gameOver = true;
+                    }
+                    if (lives > 0 || success) generateCard();
+                    else render(); // render game over
+                }, 300);
+            }
+
+            const keydownHandler = (e) => {
+                if (gameOver || !card || animating) return;
+                if (e.key === 'ArrowLeft') handleSwipe(false);
+                if (e.key === 'ArrowRight') handleSwipe(true);
+            };
+            window.addEventListener('keydown', keydownHandler);
+
+            window.swipeHandle = handleSwipe;
+            window.swipeRestart = () => { lives = 3; score = 0; gameOver = false; generateCard(); };
+            
+            generateCard();
+
+            return { 
+                cleanup: () => { 
+                    clearInterval(timerInterval); 
+                    window.removeEventListener('keydown', keydownHandler);
+                    delete window.swipeHandle; delete window.swipeRestart;
+                } 
+            };
+        }
+
+        function initConnectMode(container) {
+            const verbs = planData[state.day] || [];
+            let cards = [];
+            let selected = null;
+            let matched = [];
+            let time = 0;
+            let playing = false;
+            let timerInterval;
+
+            function initGame() {
+                const shuffledVerbs = [...verbs].sort(() => Math.random() - 0.5).slice(0, 6);
+                let gameCards = [];
+                shuffledVerbs.forEach(v => {
+                    gameCards.push({ id: `${v.i}-inf`, text: v.i, matchId: v.i, type: 'inf' });
+                    gameCards.push({ id: `${v.i}-pp`, text: v.pp.split('/')[0], matchId: v.i, type: 'pp' });
+                });
+                cards = gameCards.sort(() => Math.random() - 0.5);
+                selected = null;
+                matched = [];
+                time = 0;
+                playing = true;
+                
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    time++;
+                    const timeEl = document.getElementById('connect-time');
+                    if (timeEl) timeEl.textContent = `${time}s`;
+                }, 1000);
+                render();
+            }
+
+            function render() {
+                if (matched.length > 0 && matched.length === cards.length) {
+                    clearInterval(timerInterval);
+                    container.innerHTML = `
+                        <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center mt-4 md:mt-10 animate-zoom-in">
+                            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="award" class="w-10 h-10 text-emerald-500"></i>
+                            </div>
+                            <h2 class="text-3xl font-black text-slate-800 mb-2">Clear!</h2>
+                            <p class="text-slate-500 mb-6">You matched all pairs in:</p>
+                            <p class="text-5xl font-black text-emerald-500 mb-8">${time}s</p>
+                            <button onclick="window.connectRestart()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl active:scale-95 transition-transform">Play Again</button>
+                        </div>
+                    `;
+                    lucide.createIcons({ root: container });
+                    return;
+                }
+
+                let html = `
+                    <div class="max-w-lg mx-auto mt-4 md:mt-10 animate-fade-in">
+                        <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                                    <i data-lucide="link" class="text-red-500"></i> Connect
+                                </h2>
+                                <p class="text-xs text-slate-500 mt-1">Match Infinitive with Participle</p>
+                            </div>
+                            <div id="connect-time" class="text-2xl font-black text-slate-700 bg-slate-100 px-4 py-2 rounded-lg">${time}s</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                `;
+
+                cards.forEach(card => {
+                    const isMatched = matched.includes(card.id);
+                    const isSelected = selected && selected.id === card.id;
+                    let cls = `p-3 sm:p-4 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 shadow-sm border-b-4 flex items-center justify-center min-h-[80px] `;
+                    
+                    if (isMatched) cls += 'bg-slate-50 border-transparent text-transparent opacity-0 scale-90 pointer-events-none';
+                    else if (isSelected) cls += 'bg-red-500 border-red-700 text-white scale-105 shadow-md';
+                    else if (card.type === 'inf') cls += 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50';
+                    else cls += 'bg-slate-100 border-slate-300 text-slate-800 hover:bg-slate-200';
+
+                    html += `<button onclick="window.connectHandleClick('${card.id}')" ${isMatched ? 'disabled' : ''} class="${cls}">${card.text}</button>`;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML = html;
+                lucide.createIcons({ root: container });
+            }
+
+            window.connectHandleClick = (cardId) => {
+                const card = cards.find(c => c.id === cardId);
+                if (matched.includes(card.id) || (selected && selected.id === card.id)) return;
+                
+                speakText(card.text, 1.2);
+
+                if (!selected) {
+                    selected = card;
+                } else {
+                    if (selected.matchId === card.matchId && selected.type !== card.type) {
+                        matched.push(selected.id, card.id);
+                        selected = null;
+                    } else {
+                        selected = null;
+                    }
+                }
+                render();
+            };
+            window.connectRestart = initGame;
+
+            initGame();
+            return { cleanup: () => { clearInterval(timerInterval); delete window.connectHandleClick; delete window.connectRestart; } };
+        }
+
+        function initScrambleMode(container) {
+            const verbs = planData[state.day] || [];
+            let currentVerb = null;
+            let available = [];
+            let selected = [];
+            let status = 'playing';
+
+            function getNewWord() {
+                currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
+                const correctPP = currentVerb.pp.split('/')[0].toUpperCase();
+                
+                const letters = correctPP.split('').map((char, index) => ({ char, id: index }));
+                available = letters.sort(() => Math.random() - 0.5);
+                selected = [];
+                status = 'playing';
+                render();
+            }
+
+            function render() {
+                if (!currentVerb) return;
+                let html = `
+                <div class="max-w-md mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 mt-4 md:mt-10 animate-zoom-in text-center">
+                    <h2 class="text-xl font-bold text-slate-800 mb-1">Scramble</h2>
+                    <p class="text-xs text-slate-500 mb-6">Build the Past Participle for:</p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-8 inline-block px-8">
+                        <p class="text-3xl font-black text-slate-700">${currentVerb.i}</p>
+                        <p class="text-sm font-medium text-slate-400 mt-1">${currentVerb.s}</p>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-2 mb-8 min-h-[50px]">
+                `;
+
+                // Selected Slots
+                selected.forEach(letter => {
+                    let cls = 'bg-slate-800 text-white border-slate-900 hover:bg-slate-700';
+                    if (status === 'correct') cls = 'bg-emerald-500 text-white border-emerald-700';
+                    else if (status === 'incorrect') cls = 'bg-red-500 text-white border-red-700';
+                    html += `<button onclick="window.scrambleDeselect(${letter.id})" ${status !== 'playing' ? 'disabled' : ''} class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-2xl font-black rounded-lg shadow-sm border-b-4 transition-transform active:scale-95 ${cls}">${letter.char}</button>`;
+                });
+                
+                if (status === 'playing') {
+                    available.forEach(() => {
+                        html += `<div class="w-12 h-12 sm:w-14 sm:h-14 border-2 border-dashed border-slate-200 rounded-lg bg-slate-50"></div>`;
+                    });
+                }
+                html += `</div>`;
+
+                // Available Letters or Result
+                if (status === 'playing') {
+                    html += `<div class="flex flex-wrap justify-center gap-2 bg-slate-50 p-4 rounded-xl border border-slate-100">`;
+                    available.forEach(letter => {
+                        html += `<button onclick="window.scrambleSelect(${letter.id})" class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-2xl font-black rounded-lg bg-white border border-slate-200 border-b-4 text-slate-700 hover:bg-slate-100 hover:text-red-500 hover:border-red-200 transition-all active:scale-95">${letter.char}</button>`;
+                    });
+                    html += `</div>`;
+                } else {
+                    html += `
+                        <div class="mt-6 p-4 rounded-xl text-left animate-fade-in ${status === 'correct' ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-lucide="${status === 'correct' ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 ${status === 'correct' ? 'text-emerald-600' : 'text-red-600'}"></i>
+                                <h3 class="text-lg font-bold ${status === 'correct' ? 'text-emerald-800' : 'text-red-800'}">${status === 'correct' ? 'Awesome!' : 'Not quite right.'}</h3>
+                            </div>
+                            ${status === 'incorrect' ? `
+                                <div class="text-center bg-white p-3 rounded-lg border border-red-100 my-3 shadow-sm">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Correct Spelling</p>
+                                    <p class="font-black text-2xl text-red-600 tracking-widest">${currentVerb.pp.split('/')[0].toUpperCase()}</p>
+                                </div>
+                            ` : ''}
+                            <button onclick="window.scrambleNext()" class="w-full bg-white border-2 border-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-50 transition-all flex justify-center items-center gap-2 mt-2">
+                                Next Word <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+                container.innerHTML = html;
+                lucide.createIcons({ root: container });
+                
+                if (status === 'playing' && available.length === 0) {
+                    checkAnswer();
+                }
+            }
+
+            window.scrambleSelect = (id) => {
+                if (status !== 'playing') return;
+                const idx = available.findIndex(l => l.id === id);
+                if (idx > -1) {
+                    const letter = available.splice(idx, 1)[0];
+                    selected.push(letter);
+                    speakText(letter.char, 1.5);
+                    render();
+                }
+            };
+
+            window.scrambleDeselect = (id) => {
+                if (status !== 'playing') return;
+                const idx = selected.findIndex(l => l.id === id);
+                if (idx > -1) {
+                    const letter = selected.splice(idx, 1)[0];
+                    available.push(letter);
+                    render();
+                }
+            };
+
+            function checkAnswer() {
+                const userWord = selected.map(l => l.char).join('');
+                const correctWord = currentVerb.pp.split('/')[0].toUpperCase();
+                const isCorrect = userWord === correctWord;
+                
+                status = isCorrect ? 'correct' : 'incorrect';
+                updateMastery(currentVerb.i, isCorrect);
+
+                if (isCorrect) speakText("Perfect!");
+                else {
+                    speakText("Incorrect");
+                    setTimeout(() => speakText(correctWord), 1000);
+                }
+                render();
+            }
+
+            window.scrambleNext = getNewWord;
+            getNewWord();
+
+            return { cleanup: () => { delete window.scrambleSelect; delete window.scrambleDeselect; delete window.scrambleNext; } };
+        }
+
+        function initExamMode(container) {
+            const verbs = planData[state.day] || [];
+            let started = false;
+            let currentIndex = 0;
+            let answers = [];
+            let shuffledVerbs = [];
+
+            function init() {
+                started = false;
+                currentIndex = 0;
+                answers = [];
+                shuffledVerbs = [...verbs].sort(() => Math.random() - 0.5);
+                render();
+            }
+
+            function render() {
+                if (!started) {
+                    container.innerHTML = `
+                        <div class="max-w-xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 text-center mt-4 md:mt-10 animate-zoom-in">
+                            <div class="w-20 h-20 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i data-lucide="award" class="text-yellow-500 w-10 h-10"></i>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 mb-3">Competition Simulator</h2>
+                            <p class="text-sm sm:text-base text-slate-500 mb-8 px-2">You will be tested on the <strong>Past Participle</strong> of today's ${verbs.length} verbs at random. Show your speed and accuracy.</p>
+                            <button onclick="window.examStart()" class="w-full bg-slate-900 text-white font-bold text-lg py-4 rounded-xl shadow-lg hover:bg-slate-800 active:scale-95 transition-transform flex justify-center items-center gap-2">
+                                Start Exam <i data-lucide="rocket" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    `;
+                } else if (currentIndex >= shuffledVerbs.length) {
+                    const score = answers.filter(a => a.correct).length;
+                    const percentage = Math.round((score / verbs.length) * 100);
+                    let resHtml = `
+                        <div class="max-w-2xl mx-auto bg-white p-4 sm:p-8 rounded-2xl shadow-sm border border-slate-200 mt-2 animate-zoom-in">
+                            <div class="text-center mb-6 border-b border-slate-100 pb-6">
+                                <h2 class="text-2xl font-extrabold text-slate-800 mb-2">Final Results</h2>
+                                <div class="text-6xl font-black ${percentage >= 80 ? 'text-emerald-500' : (percentage >= 50 ? 'text-yellow-500' : 'text-red-500')}">${percentage}%</div>
+                                <p class="text-slate-500 mt-2 font-medium text-sm">You got ${score} out of ${verbs.length} correct</p>
+                            </div>
+                            <div class="space-y-3">
+                    `;
+                    answers.forEach((ans, i) => {
+                        resHtml += `
+                            <div class="p-4 rounded-xl border flex justify-between items-center ${ans.correct ? 'bg-emerald-50 border-emerald-100' : 'bg-red-50 border-red-100'}">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-sm text-slate-800 mb-1">${i+1}. ${ans.verb.i} <span class="text-xs text-slate-400 font-normal ml-1">(${ans.verb.s})</span></span>
+                                    ${ans.correct 
+                                        ? `<span class="text-emerald-600 font-black text-lg">${ans.userAnswer}</span>`
+                                        : `<div class="flex items-center flex-wrap gap-2">
+                                            <span class="line-through text-red-400 text-sm">${ans.userAnswer || '(empty)'}</span>
+                                            <span class="text-red-700 font-black text-lg">${ans.verb.pp}</span>
+                                           </div>`
+                                    }
+                                </div>
+                                <i data-lucide="${ans.correct ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 flex-shrink-0 ${ans.correct ? 'text-emerald-500' : 'text-red-500'}"></i>
+                            </div>
+                        `;
+                    });
+                    resHtml += `
+                            </div>
+                            <button onclick="window.examInit()" class="w-full mt-6 bg-slate-900 text-white font-bold text-lg py-4 rounded-xl hover:bg-slate-800 active:scale-95 transition-transform">Retake Exam</button>
+                        </div>
+                    `;
+                    container.innerHTML = resHtml;
+                } else {
+                    const currentV = shuffledVerbs[currentIndex];
+                    container.innerHTML = `
+                        <div class="max-w-xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 text-center relative mt-4 md:mt-10 animate-fade-in">
+                            <div class="absolute top-4 left-4 bg-slate-100 px-3 py-1 rounded-full font-bold text-slate-500 text-xs">${currentIndex + 1} / ${verbs.length}</div>
+                            <div class="w-full bg-slate-100 h-1.5 absolute top-0 left-0 rounded-t-2xl overflow-hidden">
+                                <div class="h-full bg-slate-900 transition-all duration-300" style="width: ${(currentIndex / verbs.length) * 100}%"></div>
+                            </div>
+                            <p class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-8 mb-1">Target: Past Participle</p>
+                            <h2 class="text-4xl sm:text-5xl font-black text-slate-800 mb-1">${currentV.i}</h2>
+                            <p class="text-sm text-slate-500 font-medium mb-8">Meaning: ${currentV.s}</p>
+                            
+                            <input id="exam-input" type="text" class="w-full p-4 border-2 border-slate-200 rounded-xl text-center font-bold text-2xl focus:border-slate-800 focus:ring-4 focus:ring-slate-100 focus:outline-none transition-all shadow-inner bg-slate-50 focus:bg-white" placeholder="Type participle..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key === 'Enter') window.examNext()">
+                            
+                            <button onclick="window.examNext()" class="w-full mt-6 bg-slate-900 text-white font-bold text-lg py-4 rounded-xl hover:bg-slate-800 active:scale-95 transition-transform flex justify-center items-center gap-2">
+                                Next <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    `;
+                    setTimeout(() => document.getElementById('exam-input')?.focus(), 10);
+                }
+                lucide.createIcons({ root: container });
+            }
+
+            window.examStart = () => { started = true; render(); };
+            window.examNext = () => {
+                const inputEl = document.getElementById('exam-input');
+                if (!inputEl) return;
+                const val = inputEl.value;
+                const currentV = shuffledVerbs[currentIndex];
+                answers.push({ verb: currentV, userAnswer: val, correct: checkFormMatch(val, currentV.pp) });
+                currentIndex++;
+                render();
+            };
+            window.examInit = init;
+
+            init();
+            return { cleanup: () => { delete window.examStart; delete window.examNext; delete window.examInit; } };
+        }
+
+        // --- MODULES (Phrasal Verbs) ---
+
+        function initPhrasalStudyMode(container) {
+            const verbs = phrasalVerbsData[state.day] || [];
+            
+            let html = `
+            <div class="animate-fade-in">
                 <div class="mb-4 flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-200">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">Daily List</h2>
+                        <h2 class="text-lg font-bold text-slate-800">Daily Phrasals</h2>
                         <p class="text-xs text-slate-500">${verbs.length} verbs today</p>
                     </div>
-                    <div class="text-xs text-slate-400 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
-                        Tap ↕ for examples
-                    </div>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-slide-up">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             `;
 
-            verbs.forEach((v, index) => {
-                const score = masteryData[v.i] || 0;
-                const isExpanded = expandedRowIndex === index;
-                
-                content += `
-                    <div class="bg-white rounded-2xl shadow-sm border ${isExpanded ? 'border-red-300 ring-2 ring-red-50' : 'border-slate-200'} overflow-hidden transition-all">
-                        
-                        <div class="p-4 sm:p-5 flex justify-between items-start cursor-pointer" onclick="toggleRow(${index})">
-                            <div>
-                                <h3 class="text-xl sm:text-2xl font-black text-slate-800">${v.i}</h3>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-sm text-slate-500">Past: <span class="font-semibold text-slate-700">${v.p}</span></span>
-                                    <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-md ${v.t === 'Regular' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'}">
-                                        ${v.t}
-                                    </span>
+            verbs.forEach(v => {
+                const escapedEx = v.ex.replace(/'/g, "\\'");
+                html += `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all hover:border-indigo-300">
+                        <div class="p-4 sm:p-5">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-xl sm:text-2xl font-black text-indigo-700">${v.pv}</h3>
+                                    <p class="text-sm font-medium text-slate-500 mt-1">${v.s}</p>
                                 </div>
-                                <p class="text-sm font-medium text-slate-600 mt-2">${v.s}</p>
-                            </div>
-                            
-                            <div class="flex flex-col items-end gap-3">
-                                <button onclick="event.stopPropagation(); speak('${v.i}, ${v.p}, ${v.pp}')" class="p-2.5 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-full transition-colors">
+                                <button onclick="speakText('${v.pv}')" class="p-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white rounded-full transition-colors">
                                     <i data-lucide="volume-2" class="w-5 h-5"></i>
                                 </button>
-                                <div class="flex gap-1">
-                                    <div class="w-2 h-2 rounded-full ${score >= 1 ? 'bg-emerald-400' : 'bg-slate-200'}"></div>
-                                    <div class="w-2 h-2 rounded-full ${score >= 2 ? 'bg-emerald-400' : 'bg-slate-200'}"></div>
-                                    <div class="w-2 h-2 rounded-full ${score >= 3 ? 'bg-emerald-400' : 'bg-slate-200'}"></div>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Example</p>
+                                <div class="flex justify-between items-center gap-2">
+                                    <p class="text-sm font-semibold text-slate-700">"${v.ex}"</p>
+                                    <button onclick="speakText('${escapedEx}')" class="p-1 rounded-full text-slate-400 bg-white border border-slate-200 hover:bg-slate-100 flex-shrink-0 flex items-center justify-center">
+                                        <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Target Goal Box inside card -->
-                        <div class="mx-4 mb-4 bg-red-50 p-3 sm:p-4 rounded-xl border border-red-100 flex justify-between items-center cursor-pointer" onclick="toggleRow(${index})">
-                            <div>
-                                <p class="text-[10px] font-bold text-red-400 uppercase tracking-wider">Goal: Past Participle</p>
-                                <p class="text-xl sm:text-2xl font-black text-red-700 mt-0.5">${v.pp}</p>
-                            </div>
-                            <i data-lucide="${isExpanded ? 'chevron-up' : 'chevron-down'}" class="text-red-400 w-5 h-5"></i>
-                        </div>
-
-                        ${isExpanded ? `
-                            <div class="bg-slate-50 border-t border-slate-100 p-4 space-y-3">
-                                ${renderExampleCard("Infinitive", v.i, v.ex.i[0], v.ex.i[1], false)}
-                                ${renderExampleCard("Simple Past", v.p, v.ex.p[0], v.ex.p[1], false)}
-                                ${renderExampleCard("Past Participle", v.pp, v.ex.pp[0], v.ex.pp[1], true)}
-                            </div>
-                        ` : ''}
                     </div>
                 `;
             });
 
-            content += `</div>`;
-            document.getElementById('main-content').innerHTML = content;
-            lucide.createIcons();
+            html += `</div></div>`;
+            container.innerHTML = html;
+            return { cleanup: () => {} };
         }
 
-        function renderExampleCard(title, form, eng, esp, highlight) {
-            return `
-                <div class="p-3 rounded-lg relative ${highlight ? 'bg-red-100 border border-red-200 shadow-sm' : 'bg-white border border-slate-200'}">
-                    <div class="text-[10px] font-bold uppercase tracking-wide mb-1 ${highlight ? 'text-red-600' : 'text-slate-400'}">${title}</div>
-                    <div class="text-slate-800 font-semibold text-sm pr-8">"${eng}"</div>
-                    <div class="text-slate-500 text-xs mt-0.5">"${esp}"</div>
-                    <button 
-                        onclick="speak('${eng.replace(/'/g, "\\'")}')"
-                        class="absolute top-3 right-3 p-1 rounded-full transition-colors ${highlight ? 'text-red-500 bg-red-200 hover:bg-red-300' : 'text-slate-400 bg-slate-100 hover:bg-slate-200'}"
-                    >
-                        <i data-lucide="play" class="w-3.5 h-3.5"></i>
-                    </button>
-                </div>
-            `;
-        }
+        function initPhrasalWriteMode(container) {
+            const verbs = phrasalVerbsData[state.day] || [];
+            let currentVerb = null;
+            let status = 'playing';
+            let inputValue = '';
 
-        function initWriteMode() {
-            const verbs = planData[currentDay];
-            const weightedVerbs = [...verbs].sort((a, b) => {
-                const scoreA = masteryData[a.i] || 0;
-                const scoreB = masteryData[b.i] || 0;
-                return scoreA - scoreB;
-            });
-            const pool = weightedVerbs.slice(0, Math.min(5, verbs.length));
-            writeState.currentVerb = pool[Math.floor(Math.random() * pool.length)];
-            writeState.status = 'playing';
-            renderWriteMode();
-        }
-
-        function checkWriteAnswer() {
-            if (writeState.status !== 'playing') return;
-            const input = document.getElementById('write-input').value;
-            const isCorrect = checkForm(input, writeState.currentVerb.pp);
-            
-            writeState.status = isCorrect ? 'correct' : 'incorrect';
-            updateMastery(writeState.currentVerb.i, isCorrect);
-            speak(isCorrect ? "Excellent!" : "Incorrect.");
-            renderWriteMode();
-        }
-
-        function renderWriteMode() {
-            if (!writeState.currentVerb) return;
-            const v = writeState.currentVerb;
-            const masteryLevel = Math.max(0, ((masteryData[v.i] || 0) / 3) * 100);
-
-            let content = `
-                <div class="max-w-md mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden animate-slide-up mt-4 md:mt-10">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-slate-100">
-                        <div class="h-full bg-emerald-400 transition-all duration-500" style="width: ${masteryLevel}%"></div>
-                    </div>
-
-                    <div class="text-center mb-6 mt-2">
-                        <p class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Write the Past Participle of</p>
-                        <h2 class="text-3xl sm:text-4xl font-extrabold text-red-600 mb-1">${v.s}</h2>
-                        <p class="text-sm text-slate-500 font-medium">Infinitive: <span class="font-bold text-slate-700">${v.i}</span></p>
-                    </div>
-
-                    <div>
-                        <input 
-                            type="text" 
-                            id="write-input"
-                            class="w-full p-4 sm:p-5 border-2 rounded-xl text-center font-black text-2xl focus:outline-none transition-all shadow-inner ${
-                                writeState.status !== 'playing' ? 'bg-slate-50' : 'bg-white focus:border-red-500 focus:ring-4 focus:ring-red-50'
-                            } ${writeState.status === 'correct' ? 'border-emerald-400 text-emerald-700 bg-emerald-50' : writeState.status === 'incorrect' ? 'border-red-400 bg-red-50' : 'border-slate-300 text-slate-800'}"
-                            ${writeState.status !== 'playing' ? 'disabled' : ''}
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            placeholder="Type here..."
-                            onkeydown="if(event.key === 'Enter') checkWriteAnswer()"
-                        />
-                    </div>
-            `;
-
-            if (writeState.status === 'playing') {
-                content += `
-                    <button onclick="checkWriteAnswer()" class="w-full mt-6 bg-red-600 text-white font-bold text-lg py-3.5 sm:py-4 rounded-xl hover:bg-red-700 shadow-md active:scale-95 transition-transform flex items-center justify-center gap-2">
-                        Check Answer
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    </button>
-                `;
-            } else {
-                content += renderResultBox(writeState.status, v, 'initWriteMode');
+            function getNewVerb() {
+                currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
+                status = 'playing';
+                inputValue = '';
+                render();
             }
 
-            content += `</div>`;
-            document.getElementById('main-content').innerHTML = content;
-            if(writeState.status === 'playing') {
-                // Slight delay for mobile keyboard focus smoothness
-                setTimeout(() => document.getElementById('write-input').focus(), 100);
-            }
-            lucide.createIcons();
-        }
-
-        function initSpellMode() {
-            const verbs = planData[currentDay];
-            spellState.currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
-            spellState.status = 'playing';
-            renderSpellMode();
-        }
-
-        function playSpellWord() {
-            if (!spellState.currentVerb) return;
-            let wordToSpell = spellState.currentVerb.pp.split('/')[0].trim();
-            
-            speak(wordToSpell, 0.8);
-            setTimeout(() => {
-                const chars = wordToSpell.split('');
-                chars.forEach((char, index) => {
-                    setTimeout(() => speak(` ${char} `, 0.7), index * 1200);
-                });
-                setTimeout(() => speak(wordToSpell, 0.8), chars.length * 1200 + 800);
-            }, 1500);
-        }
-
-        function checkSpellAnswer() {
-            const input = document.getElementById('spell-input').value;
-            let correctAnswer = spellState.currentVerb.pp.split('/')[0].trim();
-            
-            if (input.toLowerCase().trim() === correctAnswer.toLowerCase().trim()) {
-                spellState.status = 'correct';
-                speak("Correct!", 1.0);
-            } else {
-                spellState.status = 'incorrect';
-                speak("Incorrect.", 1.0);
-            }
-            renderSpellMode();
-        }
-
-        function renderSpellMode() {
-            if (!spellState.currentVerb) return;
-
-            let content = `
-                <div class="max-w-md mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 text-center animate-slide-up mt-4 md:mt-10">
-                    <div class="mb-6">
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">Spelling Bee</h2>
-                        <p class="text-xs sm:text-sm text-slate-500 mt-1">The voice will spell the <strong class="text-red-500">Past Participle</strong>.</p>
-                    </div>
-
-                    <button 
-                        onclick="playSpellWord()"
-                        class="w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full flex items-center justify-center transition-all transform active:scale-90 shadow-lg border-4 border-white ${spellState.status === 'playing' ? 'bg-red-500 text-white hover:bg-red-600 shadow-red-200' : 'bg-slate-100 text-slate-400'}"
-                    >
-                        <i data-lucide="volume-2" class="w-10 h-10 sm:w-12 sm:h-12"></i>
-                    </button>
-
-                    <div class="mt-8">
-                        <p class="text-[11px] sm:text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Type the spelled word</p>
-                        <input 
-                            type="text" 
-                            id="spell-input"
-                            class="w-full p-3 sm:p-4 border-b-4 border-slate-200 focus:border-red-500 bg-slate-50 focus:bg-white focus:outline-none text-center text-2xl sm:text-3xl font-extrabold text-slate-800 transition-colors uppercase tracking-[0.3em]"
-                            placeholder="_ _ _ _"
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            ${spellState.status !== 'playing' ? 'disabled' : ''}
-                            onkeydown="if(event.key === 'Enter') checkSpellAnswer()"
-                        />
-                    </div>
-            `;
-
-            if (spellState.status === 'playing') {
-                content += `<button onclick="checkSpellAnswer()" class="w-full mt-6 bg-red-600 text-white font-bold text-lg py-3.5 sm:py-4 rounded-xl hover:bg-red-700 active:scale-95 transition-transform">Verify</button>`;
-            } else {
-                content += `
-                    <div class="mt-6 p-4 sm:p-5 rounded-xl text-left ${spellState.status === 'correct' ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}">
-                        <div class="flex items-center gap-2 mb-2">
-                            <i data-lucide="${spellState.status === 'correct' ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 ${spellState.status === 'correct' ? 'text-emerald-600' : 'text-red-600'}"></i>
-                            <h3 class="text-lg font-bold ${spellState.status === 'correct' ? 'text-emerald-700' : 'text-red-700'}">
-                                ${spellState.status === 'correct' ? 'Perfect Spelling!' : 'Incorrect Spelling'}
-                            </h3>
-                        </div>
-                        ${spellState.status === 'incorrect' ? `
-                            <p class="text-sm text-slate-600 mb-1">The correct word was:</p>
-                            <p class="text-2xl font-black text-red-600 tracking-widest uppercase">${spellState.currentVerb.pp.split('/')[0]}</p>
-                        ` : ''}
-                        <p class="text-xs text-slate-500 mt-2">Verb: ${spellState.currentVerb.i} (${spellState.currentVerb.s})</p>
-                        <button onclick="initSpellMode()" class="w-full mt-4 bg-white border-2 border-slate-200 font-bold py-2.5 rounded-xl hover:bg-slate-50 text-slate-700">Next Word</button>
-                    </div>
-                `;
-            }
-            content += `</div>`;
-            document.getElementById('main-content').innerHTML = content;
-            if(spellState.status === 'playing') setTimeout(() => document.getElementById('spell-input').focus(), 100);
-            lucide.createIcons();
-        }
-
-        function initListenMode() {
-            const verbs = planData[currentDay];
-            listenState.currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
-            listenState.status = 'playing';
-            setTimeout(() => speak(listenState.currentVerb.pp, 0.9), 400);
-            renderListenMode();
-        }
-
-        function checkListenAnswer() {
-            const input = document.getElementById('listen-input').value;
-            const isCorrect = input.toLowerCase().trim() === listenState.currentVerb.pp.toLowerCase().trim();
-            
-            listenState.status = isCorrect ? 'correct' : 'incorrect';
-            updateMastery(listenState.currentVerb.i, isCorrect);
-            speak(isCorrect ? "Correct!" : "Incorrect.", 1.0);
-            renderListenMode();
-        }
-
-        function renderListenMode() {
-             if (!listenState.currentVerb) return;
-
-             let content = `
-                <div class="max-w-md mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 text-center animate-slide-up mt-4 md:mt-10">
-                    <div class="mb-6">
-                        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">Dictation</h2>
-                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Listen to the <strong class="text-red-500">Past Participle</strong> and type it.</p>
-                    </div>
-
-                    <button 
-                        onclick="speak('${listenState.currentVerb.pp}', 0.9)"
-                        class="w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full flex items-center justify-center transition-all transform active:scale-90 shadow-lg border-4 border-white ${listenState.status === 'playing' ? 'bg-indigo-500 text-white hover:bg-indigo-600 shadow-indigo-200' : 'bg-slate-100 text-slate-400'}"
-                    >
-                        <i data-lucide="headphones" class="w-10 h-10 sm:w-12 sm:h-12"></i>
-                    </button>
-
-                    <div class="mt-8">
-                        <input 
-                            type="text" 
-                            id="listen-input"
-                            class="w-full p-4 border-2 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 bg-slate-50 focus:bg-white focus:outline-none text-center text-2xl font-extrabold text-slate-800 transition-all shadow-inner"
-                            placeholder="Type what you hear..."
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            ${listenState.status !== 'playing' ? 'disabled' : ''}
-                            onkeydown="if(event.key === 'Enter') checkListenAnswer()"
-                        />
-                    </div>
-             `;
-
-            if (listenState.status === 'playing') {
-                content += `<button onclick="checkListenAnswer()" class="w-full mt-6 bg-indigo-600 text-white font-bold text-lg py-3.5 sm:py-4 rounded-xl hover:bg-indigo-700 active:scale-95 transition-transform">Submit</button>`;
-            } else {
-                 content += `
-                    <div class="mt-6 p-4 rounded-xl text-left ${listenState.status === 'correct' ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}">
-                        <div class="flex items-center gap-2 mb-3">
-                            <i data-lucide="${listenState.status === 'correct' ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 ${listenState.status === 'correct' ? 'text-emerald-600' : 'text-red-600'}"></i>
-                            <h3 class="text-lg font-bold ${listenState.status === 'correct' ? 'text-emerald-800' : 'text-red-800'}">
-                                ${listenState.status === 'correct' ? 'Correct!' : 'Incorrect!'}
-                            </h3>
-                        </div>
-                        
-                        ${listenState.status === 'incorrect' ? `
-                            <div class="bg-white p-3 rounded-lg border border-red-100 text-center mb-4 shadow-sm">
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">The spoken participle was</p>
-                                <p class="text-2xl font-black text-red-600">${listenState.currentVerb.pp}</p>
-                            </div>
-                        ` : ''}
-                        <p class="text-xs text-slate-500 font-medium text-center mb-3">Infinitive: ${listenState.currentVerb.i} (${listenState.currentVerb.s})</p>
-                        
-                        <button onclick="initListenMode()" class="w-full bg-white border-2 border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl hover:bg-slate-50 transition-all">
-                            Next Audio
-                        </button>
-                    </div>
-                `;
-            }
-             content += `</div>`;
-             document.getElementById('main-content').innerHTML = content;
-             if(listenState.status === 'playing') setTimeout(() => document.getElementById('listen-input').focus(), 100);
-             lucide.createIcons();
-        }
-
-        function initExamMode() {
-            examState.started = false;
-            examState.currentIndex = 0;
-            examState.answers = [];
-            examState.shuffledVerbs = [...planData[currentDay]].sort(() => Math.random() - 0.5);
-            renderExamMode();
-        }
-
-        function startExam() {
-            examState.started = true;
-            renderExamMode();
-        }
-
-        function nextExamQuestion() {
-            const inputVal = document.getElementById('exam-input').value;
-            const currentV = examState.shuffledVerbs[examState.currentIndex];
-            const isCorrect = inputVal.toLowerCase().trim() === currentV.pp.toLowerCase().trim();
-            
-            examState.answers.push({ verb: currentV, userAnswer: inputVal, correct: isCorrect });
-            examState.currentIndex++;
-            renderExamMode();
-        }
-
-        function renderExamMode() {
-            let content = '';
-            const verbs = planData[currentDay];
-
-            if (!examState.started) {
-                content = `
-                    <div class="max-w-xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 text-center animate-slide-up mt-4 md:mt-10">
-                        <div class="w-20 h-20 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i data-lucide="award" class="text-yellow-500 w-10 h-10"></i>
-                        </div>
-                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 mb-3">Competition Simulator</h2>
-                        <p class="text-sm sm:text-base text-slate-500 mb-8 px-2">You will be tested on the <strong>Past Participle</strong> of today's 15 verbs at random. Show your speed and accuracy.</p>
-                        <button onclick="startExam()" class="w-full bg-slate-900 text-white font-bold text-lg py-4 rounded-xl shadow-lg hover:bg-slate-800 active:scale-95 transition-transform flex justify-center items-center gap-2">
-                            Start Exam
-                            <i data-lucide="rocket" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                `;
-            } else if (examState.currentIndex >= examState.shuffledVerbs.length) {
-                const score = examState.answers.filter(a => a.correct).length;
-                const percentage = Math.round((score / verbs.length) * 100);
+            function render() {
+                if (!currentVerb) return;
                 
-                content = `
-                    <div class="max-w-2xl mx-auto bg-white p-4 sm:p-8 rounded-2xl shadow-sm border border-slate-200 animate-slide-up mt-2">
-                        <div class="text-center mb-6 border-b border-slate-100 pb-6">
-                            <h2 class="text-2xl font-extrabold text-slate-800 mb-2">Final Results</h2>
-                            <div class="text-6xl font-black ${percentage >= 80 ? 'text-emerald-500' : (percentage >= 50 ? 'text-yellow-500' : 'text-red-500')}">${percentage}%</div>
-                            <p class="text-slate-500 mt-2 font-medium text-sm">You got ${score} out of ${verbs.length} correct</p>
+                let inputClass = 'bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 border-slate-300 text-slate-800';
+                if (status === 'correct') inputClass = 'border-emerald-400 text-emerald-700 bg-emerald-50';
+                else if (status === 'incorrect') inputClass = 'border-red-400 bg-red-50';
+
+                let html = `
+                <div class="max-w-md mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden mt-4 md:mt-10 animate-zoom-in">
+                    <div class="text-center mb-6 mt-2">
+                        <p class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">What is the phrasal verb for</p>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-indigo-600 mb-1">${currentVerb.s}</h2>
+                        <div class="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-100 text-left">
+                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Context</p>
+                             <p class="text-sm font-semibold text-slate-700 italic">"... ${currentVerb.ex.replace(new RegExp(currentVerb.pv, 'gi'), '_____')} ..."</p>
                         </div>
-                        
-                        <div class="space-y-3">
-                            ${examState.answers.map((ans, i) => `
-                                <div class="p-4 rounded-xl border flex justify-between items-center ${ans.correct ? 'bg-emerald-50 border-emerald-100' : 'bg-red-50 border-red-100'}">
-                                    <div class="flex flex-col">
-                                        <span class="font-bold text-sm text-slate-800 mb-1">${i+1}. ${ans.verb.i} <span class="text-xs text-slate-400 font-normal ml-1">(${ans.verb.s})</span></span>
-                                        ${ans.correct 
-                                            ? `<span class="text-emerald-600 font-black text-lg">${ans.userAnswer}</span>`
-                                            : `<div class="flex items-center flex-wrap gap-2">
-                                                <span class="line-through text-red-400 text-sm">${ans.userAnswer || '(empty)'}</span>
-                                                <span class="text-red-700 font-black text-lg">${ans.verb.pp}</span>
-                                               </div>`
-                                        }
-                                    </div>
-                                    <i data-lucide="${ans.correct ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 flex-shrink-0 ${ans.correct ? 'text-emerald-500' : 'text-red-500'}"></i>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <button onclick="initExamMode()" class="w-full mt-6 bg-slate-900 text-white font-bold text-lg py-4 rounded-xl hover:bg-slate-800 active:scale-95 transition-transform">Retake Exam</button>
                     </div>
+                    
+                    <input id="phrasal-input" type="text" value="${inputValue}" oninput="window.phrasalInputVal = this.value" onkeydown="if(event.key === 'Enter') window.phrasalCheck()" ${status !== 'playing' ? 'disabled' : ''} class="w-full p-4 sm:p-5 border-2 rounded-xl text-center font-black text-2xl focus:outline-none transition-all shadow-inner ${inputClass}" autocomplete="off" spellcheck="false" placeholder="Type phrasal verb...">
                 `;
-            } else {
-                const currentV = examState.shuffledVerbs[examState.currentIndex];
-                content = `
-                    <div class="max-w-xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 text-center relative animate-slide-up mt-4 md:mt-10">
-                        <div class="absolute top-4 left-4 bg-slate-100 px-3 py-1 rounded-full font-bold text-slate-500 text-xs">
-                            ${examState.currentIndex + 1} / ${verbs.length}
-                        </div>
-                        
-                        <div class="w-full bg-slate-100 h-1.5 absolute top-0 left-0">
-                            <div class="h-full bg-slate-900 transition-all duration-300" style="width: ${(examState.currentIndex / verbs.length) * 100}%"></div>
-                        </div>
-                        
-                        <p class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-8 mb-1">Target: Past Participle</p>
-                        <h2 class="text-4xl sm:text-5xl font-black text-slate-800 mb-1">${currentV.i}</h2>
-                        <p class="text-sm text-slate-500 font-medium mb-8">Meaning: ${currentV.s}</p>
-                        
-                        <input 
-                            type="text" 
-                            id="exam-input"
-                            class="w-full p-4 border-2 border-slate-200 rounded-xl text-center font-bold text-2xl focus:border-slate-800 focus:ring-4 focus:ring-slate-100 focus:outline-none transition-all shadow-inner bg-slate-50 focus:bg-white"
-                            placeholder="Type participle..."
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            onkeydown="if(event.key === 'Enter') nextExamQuestion()"
-                        />
-                        
-                        <button onclick="nextExamQuestion()" class="w-full mt-6 bg-slate-900 text-white font-bold text-lg py-4 rounded-xl hover:bg-slate-800 active:scale-95 transition-transform flex justify-center items-center gap-2">
-                            Next
-                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+
+                if (status === 'playing') {
+                    html += `
+                        <button onclick="window.phrasalCheck()" class="w-full mt-6 bg-indigo-600 text-white font-bold text-lg py-3.5 sm:py-4 rounded-xl hover:bg-indigo-700 shadow-md active:scale-95 transition-transform flex items-center justify-center gap-2">
+                            Check Answer <i data-lucide="arrow-right" class="w-5 h-5"></i>
                         </button>
-                    </div>
-                `;
-            }
-
-            document.getElementById('main-content').innerHTML = content;
-            if (examState.started && examState.currentIndex < examState.shuffledVerbs.length) {
-                setTimeout(() => document.getElementById('exam-input').focus(), 100);
-            }
-            lucide.createIcons();
-        }
-
-        // Helper for Result Box in Write Mode
-        function renderResultBox(status, correctData, nextFunctionStr) {
-             return `
-                <div class="mt-6 p-4 sm:p-5 rounded-xl text-left animate-slide-up ${status === 'correct' ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}">
-                    <div class="flex items-center gap-2 mb-2">
-                        <i data-lucide="${status === 'correct' ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 ${status === 'correct' ? 'text-emerald-600' : 'text-red-600'}"></i>
-                        <h3 class="text-lg font-bold ${status === 'correct' ? 'text-emerald-800' : 'text-red-800'}">
-                            ${status === 'correct' ? 'Perfect!' : 'Oops! Look closely:'}
-                        </h3>
-                    </div>
-                    
-                    ${status === 'incorrect' ? `
-                        <div class="bg-white p-3 rounded-lg border border-red-100 text-center mt-3 mb-3 shadow-sm">
-                            <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Correct Participle</p>
-                            <p class="font-black text-2xl sm:text-3xl text-red-600">${correctData.pp}</p>
+                    `;
+                } else {
+                    html += `
+                        <div class="mt-6 p-4 sm:p-5 rounded-xl text-left animate-fade-in ${status === 'correct' ? 'bg-emerald-50 border border-emerald-200' : 'bg-red-50 border border-red-200'}">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i data-lucide="${status === 'correct' ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 ${status === 'correct' ? 'text-emerald-600' : 'text-red-600'}"></i>
+                                <h3 class="text-lg font-bold ${status === 'correct' ? 'text-emerald-800' : 'text-red-800'}">${status === 'correct' ? 'Perfect!' : 'Oops! Look closely:'}</h3>
+                            </div>
+                            ${status === 'incorrect' ? `
+                                <div class="bg-white p-3 rounded-lg border border-red-100 text-center mt-3 mb-3 shadow-sm">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Correct Answer</p>
+                                    <p class="font-black text-2xl sm:text-3xl text-indigo-600">${currentVerb.pv}</p>
+                                </div>
+                            ` : ''}
+                            <button onclick="${status === 'incorrect' ? `speakText('${currentVerb.pv.replace(/'/g, "\\'")}');` : ''} window.phrasalNext()" class="w-full mt-2 bg-white border-2 border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl hover:bg-slate-50 transition-all flex justify-center items-center gap-2">
+                                Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
                         </div>
-                    ` : ''}
-                    
-                    <button onclick="${nextFunctionStr}(); ${status === 'incorrect' ? `speak('${correctData.pp}')` : ''}" class="w-full mt-2 bg-white border-2 border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl hover:bg-slate-50 transition-all flex justify-center items-center gap-2">
-                        Next
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            `;
-        }
+                    `;
+                }
 
-        function renderContent() {
-            switch(activeTab) {
-                case 'study': renderStudyMode(); break;
-                case 'write': initWriteMode(); break;
-                case 'spell': initSpellMode(); break;
-                case 'listen': initListenMode(); break;
-                case 'exam': initExamMode(); break;
+                html += `</div>`;
+                container.innerHTML = html;
+                lucide.createIcons({ root: container });
+                if (status === 'playing') setTimeout(() => document.getElementById('phrasal-input')?.focus(), 10);
             }
+
+            window.phrasalInputVal = '';
+            window.phrasalCheck = () => {
+                if (status !== 'playing') return;
+                const val = window.phrasalInputVal || document.getElementById('phrasal-input').value;
+                const isCorrect = currentVerb.pv.toLowerCase().trim() === val.toLowerCase().trim();
+                status = isCorrect ? 'correct' : 'incorrect';
+                inputValue = val;
+                
+                if (isCorrect) speakText("Excellent!");
+                else {
+                    speakText("Incorrect.");
+                    setTimeout(() => speakText(currentVerb.pv), 1000); 
+                }
+                render();
+            };
+            window.phrasalNext = getNewVerb;
+
+            getNewVerb();
+            return { cleanup: () => { delete window.phrasalCheck; delete window.phrasalNext; delete window.phrasalInputVal; } };
         }
 
-        // Initial Setup
-        renderDaySelector();
-        renderTabs();
-        renderContent();
+        function initPhrasalExamMode(container) {
+            const verbs = phrasalVerbsData[state.day] || [];
+            let started = false;
+            let currentIndex = 0;
+            let answers = [];
+            let shuffledVerbs = [];
+            let options = [];
+
+            function init() {
+                started = false;
+                currentIndex = 0;
+                answers = [];
+                shuffledVerbs = [...verbs].sort(() => Math.random() - 0.5);
+                render();
+            }
+
+            function generateOptions(correctVerb) {
+                const allOtherVerbs = verbs.filter(v => v.pv !== correctVerb.pv);
+                const shuffledOthers = [...allOtherVerbs].sort(() => Math.random() - 0.5).slice(0, 3);
+                options = [...shuffledOthers, correctVerb].sort(() => Math.random() - 0.5);
+                render();
+            }
+
+            function render() {
+                if (!started) {
+                    container.innerHTML = `
+                        <div class="max-w-xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 text-center mt-4 md:mt-10 animate-zoom-in">
+                            <div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i data-lucide="award" class="text-indigo-500 w-10 h-10"></i>
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 mb-3">Phrasal Quiz</h2>
+                            <p class="text-sm sm:text-base text-slate-500 mb-8 px-2">Test your knowledge on today's ${verbs.length} phrasal verbs.</p>
+                            <button onclick="window.pExamStart()" class="w-full bg-slate-900 text-white font-bold text-lg py-4 rounded-xl shadow-lg hover:bg-slate-800 active:scale-95 transition-transform flex justify-center items-center gap-2">
+                                Start Quiz <i data-lucide="rocket" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    `;
+                } else if (currentIndex >= shuffledVerbs.length) {
+                    const score = answers.filter(a => a.correct).length;
+                    const percentage = Math.round((score / verbs.length) * 100);
+                    let resHtml = `
+                        <div class="max-w-2xl mx-auto bg-white p-4 sm:p-8 rounded-2xl shadow-sm border border-slate-200 mt-2 animate-zoom-in">
+                            <div class="text-center mb-6 border-b border-slate-100 pb-6">
+                                <h2 class="text-2xl font-extrabold text-slate-800 mb-2">Quiz Results</h2>
+                                <div class="text-6xl font-black ${percentage >= 80 ? 'text-emerald-500' : (percentage >= 50 ? 'text-yellow-500' : 'text-red-500')}">${percentage}%</div>
+                                <p class="text-slate-500 mt-2 font-medium text-sm">You got ${score} out of ${verbs.length} correct</p>
+                            </div>
+                            <div class="space-y-3">
+                    `;
+                    answers.forEach((ans, i) => {
+                        resHtml += `
+                            <div class="p-4 rounded-xl border flex justify-between items-center ${ans.correct ? 'bg-emerald-50 border-emerald-100' : 'bg-red-50 border-red-100'}">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-sm text-slate-800 mb-1">${i+1}. ${ans.verb.s}</span>
+                                    ${ans.correct 
+                                        ? `<span class="text-emerald-600 font-black text-lg">${ans.verb.pv}</span>`
+                                        : `<div class="flex items-center flex-wrap gap-2">
+                                            <span class="line-through text-red-400 text-sm">${ans.userSelected}</span>
+                                            <span class="text-indigo-700 font-black text-lg">${ans.verb.pv}</span>
+                                           </div>`
+                                    }
+                                </div>
+                                <i data-lucide="${ans.correct ? 'check-circle-2' : 'x-circle'}" class="w-6 h-6 flex-shrink-0 ${ans.correct ? 'text-emerald-500' : 'text-red-500'}"></i>
+                            </div>
+                        `;
+                    });
+                    resHtml += `
+                            </div>
+                            <button onclick="window.pExamInit()" class="w-full mt-6 bg-slate-900 text-white font-bold text-lg py-4 rounded-xl hover:bg-slate-800 active:scale-95 transition-transform">Retake Quiz</button>
+                        </div>
+                    `;
+                    container.innerHTML = resHtml;
+                } else {
+                    const currentV = shuffledVerbs[currentIndex];
+                    let qHtml = `
+                        <div class="max-w-xl mx-auto bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 text-center relative mt-4 md:mt-10 animate-fade-in">
+                            <div class="absolute top-4 left-4 bg-slate-100 px-3 py-1 rounded-full font-bold text-slate-500 text-xs">${currentIndex + 1} / ${verbs.length}</div>
+                            <div class="w-full bg-slate-100 h-1.5 absolute top-0 left-0 rounded-t-2xl overflow-hidden">
+                                <div class="h-full bg-slate-900 transition-all duration-300" style="width: ${(currentIndex / verbs.length) * 100}%"></div>
+                            </div>
+                            <p class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-8 mb-1">Select the Phrasal Verb for</p>
+                            <h2 class="text-3xl sm:text-4xl font-black text-slate-800 mb-1">${currentV.s}</h2>
+                            <div class="mt-8 space-y-3">
+                    `;
+                    options.forEach((opt, i) => {
+                        qHtml += `
+                            <button onclick="window.pExamSelect(${i})" class="w-full p-4 border-2 border-slate-200 rounded-xl text-left font-bold text-xl hover:border-indigo-500 hover:bg-indigo-50 transition-all flex items-center justify-between group">
+                                ${opt.pv}
+                                <i data-lucide="arrow-right" class="w-5 h-5 text-slate-300 group-hover:text-indigo-500 transition-colors"></i>
+                            </button>
+                        `;
+                    });
+                    qHtml += `</div></div>`;
+                    container.innerHTML = qHtml;
+                }
+                lucide.createIcons({ root: container });
+            }
+
+            window.pExamStart = () => { started = true; generateOptions(shuffledVerbs[0]); };
+            window.pExamSelect = (idx) => {
+                const selectedVerb = options[idx];
+                const currentV = shuffledVerbs[currentIndex];
+                answers.push({ verb: currentV, userSelected: selectedVerb.pv, correct: selectedVerb.pv === currentV.pv });
+                
+                currentIndex++;
+                if (currentIndex < verbs.length) generateOptions(shuffledVerbs[currentIndex]);
+                else render();
+            };
+            window.pExamInit = init;
+
+            init();
+            return { cleanup: () => { delete window.pExamStart; delete window.pExamSelect; delete window.pExamInit; } };
+        }
+
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderApp();
+        });
+
     </script>
 </body>
 </html>
